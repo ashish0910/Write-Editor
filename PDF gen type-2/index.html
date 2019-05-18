@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PDF Gen</title>
+    <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+                <h2>This will not be included</h2>
+                <div id="section-to-print">
+                                 
+                  <h1 style="color:green;">PDF GENERATOR</h1>
+                  <img src="sugar.png"/>        
+                  <p>This is the best Method but the only Drawback is the appearing pop up window to choose to save as PDF</p>
+                </div>
+                
+              <button onclick="printDiv()">Print</button>
+              
+              <script>
+                  
+                  function printDiv() {
+                    window.print();
+                }
+
+              </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PDF generation</title>
+</head>
+<body>
+    <script src="js/jspdf.min.js"></script>
+    <script src="js/html2canvas.js"></script>
+    <script>
+        function print() {
+		const filename  = 'ThisIsYourPDFFilename.pdf';
+
+		html2canvas(document.querySelector('#PDF')).then(canvas => {
+			let pdf = new jsPDF('p', 'mm', 'a4');
+			pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 211, 298);
+			pdf.save(filename);
+		});
+	}
+
+    function generatePDF() {
+        html2canvas(document.getElementById("PDF"),{
+            onrendered : function(canvas){
+                var img = canvas.toDataURL("image/png");
+                var doc = new jsPDF();
+                doc.addImage(img,'PNG', 20 ,20);
+                doc.save("doc.pdf")
+            }
+        })
+    }
+    </script>
+    <h1>PDF GENERATOR</h1>
+
+    <div id="PDF">
+        <h1>Hello</h1>
+        <p>It is an image into a PDF. Not actual text.</p>
+        <p>Those generated PDF files won’t let you select / copy / paste text as there isn’t text inside of it.</p> 
+        <p>Same goes for hyperlinks, etc.</p>
+    </div>
+
+    <a href="javascript:generatePDF()">Download PDF</a>
+
+</body>
+</html>
