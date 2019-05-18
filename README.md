@@ -5,7 +5,7 @@ This repository will contain implementation of some important features of Write 
 ## PDF Generation
 
 **Type-1**
-This approach converts the content of a <div> element into a image using html2canvas library and is converted into PDF using jsPDF library . Major drawback is that the text is not selectable and searchable as it is a part of a image .
+This approach converts the content of a 'div' element into a image using html2canvas library and is converted into PDF using jsPDF library . Major drawback is that the text is not selectable and searchable as it is a part of a image .
 
 **Type-2**
-This approach usses CSS to convert content of a <div> element into PDF format . Only drawback here is that pop up window appears to choose to save as PDF .
+This approach usses CSS to convert content of a 'div' element into PDF format . Only drawback here is that pop up window appears to choose to save as PDF .
