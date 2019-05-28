@@ -1,26 +1,13 @@
 <?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd' [
 	<!ENTITY stroke_color "#010101">
 	<!ENTITY fill_color "#FFFFFF">
-]>
-<svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
-  <g display="block" id="activity-helloworld">
-    <path d="M9.263,48.396c0.682,1.152,6.027,0.059,8.246-1.463   c2.102-1.432,3.207-2.596,4.336-2.596c1.133,0,12.54,0.92,20.935-5.715c7.225-5.707,9.773-13.788,4.52-21.437   c-5.252-7.644-13.832-9.08-20.878-8.56C16.806,9.342,4.224,16.91,4.677,28.313c0.264,6.711,3.357,9.143,4.922,10.703   c1.562,1.566,4.545,1.566,2.992,5.588C11.981,46.183,8.753,47.522,9.263,48.396z" display="inline" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5"/>
-  </g>
-  <circle cx="27.375" cy="27.5" r="19.903"
-     transform="matrix(0.6,0,0,0.6,10.95,11)"
-     id="circle4" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" display="inline" />
-  <g transform="matrix(0.6,0,0,0.6,10.95,11)" id="g6" style="display:inline">
-    <path d="m 27.376,7.598 c 0,0 -11.205,8.394 -11.205,19.976 0,11.583 11.205,19.829 11.205,19.829"
-       id="path8" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" />
-    <path d="m 27.376,7.598 c 0,0 11.066,9.141 11.066,19.976 0,10.839 -11.066,19.829 -11.066,19.829"
-       id="path10" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" />
-    <line x1="27.375999" x2="27.375999" y1="7.598" y2="47.402"
-       id="line12" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" />
-    <line x1="27.375999" x2="27.375999" y1="7.598" y2="47.402"
-       id="line14" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" />
-    <line x1="27.375999" x2="27.375999" y1="7.598" y2="47.402"
-       id="line16" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" />
-    <line x1="7.4720001" x2="47.278" y1="27.5" y2="27.5"
-       id="line18" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5" />
-  </g>
-</svg>
+]><svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="activity-write">
+	<g display="inline">
+		<g>
+			<path d="M36.519,37.127c0,0.008-0.031,0.047-0.034,0.049     c-0.055,0.07-0.131,0.113-0.196,0.162c-0.012,0.016-0.012,0.035-0.022,0.043l-7.826,5.037c-0.096,0.064-0.218,0.053-0.307-0.02     c-0.087-0.072-0.115-0.191-0.069-0.295l3.475-8.266l2.088-2.717l10.192-13.495V6.088H22.876L10.932,18.027v30.887h32.887V27.802     l-5.469,7.054L36.519,37.127z" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5"/>
+			<path d="M43.818,17.626L33.626,31.121l-2.088,2.717l-3.475,8.266     c-0.046,0.104-0.018,0.223,0.069,0.295c0.089,0.072,0.211,0.084,0.307,0.02l7.826-5.037c0.011-0.008,0.011-0.027,0.022-0.043     c0.065-0.049,0.142-0.092,0.196-0.162c0.003-0.002,0.034-0.041,0.034-0.049l1.831-2.271l5.469-7.054l8.011-10.329     c0.022-0.023,0.149-0.203,0.149-0.203c0.096-0.161,0.148-0.345,0.148-0.556c0-0.061,0-0.118-0.012-0.176     c-0.087-0.763-0.715-1.682-1.639-2.413c-0.923-0.728-1.969-1.123-2.728-1.034c-0.326,0.042-0.789,0.375-0.789,0.375     L43.818,17.626z" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5"/>
+		</g>
+		<polyline fill="none" points="10.932,18.027 22.876,18.027 22.876,6.088   " stroke="&stroke_color;" stroke-width="3.5"/>
+	</g>
+</g></svg>
+
