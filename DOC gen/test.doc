@@ -1,0 +1,86 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>75</w:Zoom>
+<w:DoNotOptimizeForBrowser/>
+</w:WordDocument>
+<o:OfficeDocumentSettings>
+<o:AllowPNG/>
+</o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+
+<style>
+    #googoose-footer {
+        margin-right: 1in;
+        position: absolute;
+        width: 100%;
+        text-align: right; 
+    }
+    #googoose-header {
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<style>
+<!--
+@page {
+	size:8.5in 11.0in;
+	margin:1.0in;
+}
+@page Container {
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-header:googoose-header;
+	mso-footer:googoose-footer;
+}
+div.Container { page:Container; }
+table#googoose-hdrftrtbl {
+	margin:0in 0in 0in 9in;
+}
+-->
+</style>
+</head>
+<body lang=en-US>
+<div class=Container><div class="googoose-wrapper">
+
+    <h1 style="font-size:42px;text-align:center;color: red">Hello World!</h1>
+    
+    <ul>
+        <li>Trying unordered list</li>
+        <li>item</li>
+        <li>item </li>
+    </ul>
+    <ol>
+        <li>Ordered lists</li>
+        <li>second</li>
+    </ol>
+
+    <h2>Tables</h2>
+    <table style="border: 1px solid black; border-collapse: collapse">
+        <tbody><tr>
+            <th style="border: 1px solid black;">head 1</th>
+            <th style="border: 1px solid black;">head 2</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;">row 1</td>
+            <td style="border: 1px solid black;">row 2</td>
+        </tr>
+    </tbody></table>
+    <h2>Image</h2>
+    
+    <p>
+        <img width="50px;" height="50px;" src="file:///Users/ashishaggarwal/Desktop/projects/write/Write-Editor/DOC%20gen/flower.jpeg" alt="image">
+    </p>
+
+    <p>
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+    </p>
+
+</div></div></body>
+</html>
