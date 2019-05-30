@@ -12,3 +12,22 @@
   width: 100%;
   overflow-x: hidden;
 }
+
+.palette-button {
+  width: 80px;
+  height: 40px;
+  margin: 4px 22px;
+  color: transparent;
+  background-size: 59px;
+  border: 0;
+  border-radius: 5.5px;
+  display: block;
+}
+
+.palette-button-notselected {
+  background-color: transparent;
+}
+
+.palette-button-selected {
+  background-color: #9c9a9c;
+}
