@@ -15,7 +15,7 @@ define([
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
-		var levelButton = document.getElementById("format-text");
+		var levelButton = document.getElementById("edit-text");
         var levels = [
             {"id": 1, "title": "copy" , "cmd":"copy"},
             {"id": 2, "title": "paste", "cmd":"paste"},

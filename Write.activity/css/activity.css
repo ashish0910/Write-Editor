@@ -2,8 +2,12 @@
   background-image: url(../activity/activity-icon.svg);
 }
 
-#main-toolbar #format-text {
-  background-image: url(../icons/format-text.svg);
+#main-toolbar #edit-text {
+  background-image: url(../icons/font-text.svg);
+}
+
+#main-toolbar #paragraph {
+  background-image: url(../icons/paragraph-bar.svg);
 }
 
 #textarea {
