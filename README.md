@@ -13,3 +13,13 @@ Demo - https://ashish0910.github.io/Write-Editor/PDF%20gen%20type-1/
 This approach usses CSS to convert content of a 'div' element into PDF format . Only drawback here is that pop up window appears to choose to save as PDF .
 
 Demo - https://ashish0910.github.io/Write-Editor/PDF%20gen%20type-2/
+
+## DOC Generation
+
+Demo - https://ashish0910.github.io/Write-Editor/DOC%20gen/
+
+## Import From docx
+
+You can use test docx file from [here](https://ashish0910.github.io/Write-Editor/%20import%20docx/test.docx)
+
+Demo - https://ashish0910.github.io/Write-Editor/%20import%20docx/
