@@ -11,9 +11,10 @@
 	href="lib/sugar-web/graphics/css/sugar-200dpi.css">
 <link rel="stylesheet" href="css/activity.css">
 <script data-main="js/loader" src="lib/require.js"></script>
+<script src="js/editor.js"></script>
 </head>
 
-<body>
+<body onload="enableEditMode();">
 <div id="main-toolbar" class="toolbar">
   <button class="toolbutton" id="activity-button" title="Write Activity"></button>
 
@@ -27,9 +28,11 @@
 <!-- The content of your activity goes inside the canvas -->
 <div id="canvas">
 
-  <textarea id="textarea"></textarea>
+  <iframe id="textarea" name="richTextFeild"></iframe>
 
 </div>
+
+<script src="js/editor.js" type="text/javascript"></script>
 </body>
 
 </html>
