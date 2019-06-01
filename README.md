@@ -19,7 +19,9 @@ Demo - https://ashish0910.github.io/Write-Editor/PDF%20gen%20type-2/
 Demo - https://ashish0910.github.io/Write-Editor/DOC%20gen/
 
 ## Import From docx
-
+This approach usses mammoth.js library for the conversion .
 You can use test docx file from [here](https://ashish0910.github.io/Write-Editor/%20import%20docx/test.docx)
 
 Demo - https://ashish0910.github.io/Write-Editor/%20import%20docx/
+
+Limitations : Borders of the table are ignored , Colour of text is ignored .
