@@ -4,8 +4,9 @@ define([
     "sugar-web/graphics/icon",
     "webL10n",
     "sugar-web/graphics/presencepalette",
-	"activity/palettes/edit-text-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette) {
+    "activity/palettes/edit-text-palette",
+    "activity/palettes/paragraph-palette",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -15,16 +16,16 @@ define([
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
-		var levelButton = document.getElementById("edit-text");
-        var levels = [
+		var editButton = document.getElementById("edit-text");
+        var options = [
             {"id": 1, "title": "copy" , "cmd":"copy"},
             {"id": 2, "title": "paste", "cmd":"paste"},
             {"id": 3, "title": "undo", "cmd":"undo"},
             {"id": 4, "title": "redo", "cmd":"redo"},
         ];
-        editpalette = new editpalette.Editpalette(levelButton, undefined);
-        editpalette.setCategories(levels);
-        editpalette.addEventListener('filter', function () {
+        editpalette = new editpalette.Editpalette(editButton, undefined);
+        editpalette.setCategories(options);
+        editpalette.addEventListener('edit', function () {
             editpalette.popDown();
         });
         document.getElementById("1").addEventListener("click",function(){
@@ -39,6 +40,35 @@ define([
         document.getElementById("4").addEventListener("click",function(){
             richTextFeild.document.execCommand("redo",false,null);
         });
+
+        // Initiating paragraph palette ( Alignment settings )
+        
+        var paraButton = document.getElementById("paragraph");
+        var paraoptions = [
+            {"id": 5, "title":"justify Left" , "cmd":"justifyLeft"},
+            {"id": 6, "title":"justify Right" , "cmd":"justifyRight"},
+            {"id": 7, "title":"justify Center" , "cmd":"justifyCenter"},
+            {"id": 8, "title":"justify Full" , "cmd":"justifyFull"},
+        ];
+        parapalette = new parapalette.Parapalette(paraButton, undefined);
+        parapalette.setCategories(paraoptions);
+        parapalette.addEventListener('para', function () {
+            parapalette.popDown();
+        });
+
+        document.getElementById("5").addEventListener("click",function(){
+            richTextFeild.document.execCommand("justifyLeft",false,null);
+        })
+        document.getElementById("6").addEventListener("click",function(){
+            richTextFeild.document.execCommand("justifyRight",false,null);
+        });
+        document.getElementById("7").addEventListener("click",function(){
+            richTextFeild.document.execCommand("justifyCenter",false,null);
+        });
+        document.getElementById("8").addEventListener("click",function(){
+            richTextFeild.document.execCommand("justifyFull",false,null);
+        });
+
 	});
 
 });
