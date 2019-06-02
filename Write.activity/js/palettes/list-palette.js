@@ -2,13 +2,13 @@ define(["sugar-web/graphics/palette"], function (palette) {
 
     'use strict';
 
-    var filterpalette = {};
+    var listpalette = {};
 
-    filterpalette.FilterPalette = function (invoker, primaryText, menuData) {
+    listpalette.Listpalette = function (invoker, primaryText, menuData) {
         palette.Palette.call(this, invoker, primaryText);
 
-        this.filterEvent = document.createEvent("CustomEvent");
-        this.filterEvent.initCustomEvent('filter', true, true, {});
+        this.listEvent = document.createEvent("CustomEvent");
+        this.listEvent.initCustomEvent('list', true, true, {});
         this.remoteEvent = document.createEvent("CustomEvent");
         this.remoteEvent.initCustomEvent('remote', true, true, {});
 
@@ -24,14 +24,14 @@ define(["sugar-web/graphics/palette"], function (palette) {
 
             for (var i = 0 ; i < newcategories.length ; i++) {
                 var newbutton = document.createElement('button');
-                newbutton.className = 'toolbutton palette-button palette-button-notselected filter-item';
+                newbutton.className = 'toolbutton palette-button palette-button-notselected';
                 newbutton.setAttribute('id', newcategories[i].id);
                 newbutton.setAttribute('title', newcategories[i].title);
                 var url = "url(icons/"+newcategories[i].cmd+".svg)";
                 newbutton.style.backgroundImage = url;
                 var newid = newcategories[i].id;
                 newbutton.onclick = function() {
-                    that.setFilter(this.id);
+                    that.setList(this.id);
                 }
                 this.buttons.push(newbutton);
                 div.appendChild(newbutton);
@@ -39,28 +39,28 @@ define(["sugar-web/graphics/palette"], function (palette) {
             this.setContent([div]);
         }
 
-        this.setFilter = function(newfilter) {
-            var currentFilter = this.getFilter();
-            var noFilter = (currentFilter.length != 0 && currentFilter == newfilter);
-            var filterIndex = -1;
+        this.setList = function(newlist) {
+            var currentList = this.getList();
+            var noList = (currentList.length != 0 && currentList == newlist);
+            var listIndex = -1;
             for (var i = 0 ; i < this.categories.length ; i++) {
-                if (this.categories[i].id == newfilter) {
-                    filterIndex = i;
+                if (this.categories[i].id == newlist) {
+                    listIndex = i;
                     break;
                 }
             }
-            if (filterIndex == -1) {
+            if (listIndex == -1) {
                 return;
             }
             for (var i = 0 ; i < this.buttons.length ; i++) {
-                this.buttons[i].className = 'toolbutton palette-button palette-button-notselected filter-item';
+                this.buttons[i].className = 'toolbutton palette-button palette-button-notselected';
             }
-            if (noFilter) {
-                this.getPalette().dispatchEvent(this.filterEvent);
+            if (noList) {
+                this.getPalette().dispatchEvent(this.listEvent);
                 return;
             }
-            this.buttons[filterIndex].className = 'toolbutton palette-button palette-button-selected filter-item';
-            that.getPalette().dispatchEvent(that.filterEvent);
+            this.buttons[listIndex].className = 'toolbutton palette-button palette-button-selected';
+            that.getPalette().dispatchEvent(that.listEvent);
         }
     };
 
@@ -68,7 +68,7 @@ define(["sugar-web/graphics/palette"], function (palette) {
         return this.getPalette().addEventListener(type, listener, useCapture);
     };
 
-    filterpalette.FilterPalette.prototype =
+    listpalette.Listpalette.prototype =
         Object.create(palette.Palette.prototype, {
             addEventListener: {
                 value: addEventListener,
@@ -77,18 +77,18 @@ define(["sugar-web/graphics/palette"], function (palette) {
                 writable: true
             }
         });
-    filterpalette.FilterPalette.prototype.setCategories = function(newcategories) {
+    listpalette.Listpalette.prototype.setCategories = function(newcategories) {
         this.setCategories(newcategories);
     }
-    filterpalette.FilterPalette.prototype.setFilter = function(newfilter) {
-        this.setFilter(newfilter);
+    listpalette.Listpalette.prototype.setList = function(newlist) {
+        this.setList(newlist);
     }
-    filterpalette.FilterPalette.prototype.getFilter = function() {
+    listpalette.Listpalette.prototype.getList = function() {
         for (var i = 0 ; i < this.buttons.length ; i++) {
-            if (this.buttons[i].className == 'toolbutton palette-button palette-button-selected filter-item')
+            if (this.buttons[i].className == 'toolbutton palette-button palette-button-selected')
                 return this.categories[i].id;
         }
         return "";
     }
-    return filterpalette;
+    return listpalette;
 });

@@ -7,7 +7,7 @@ define([
     "activity/palettes/edit-text-palette",
     "activity/palettes/paragraph-palette",
     "activity/palettes/list-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , toolpalette) {
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -71,19 +71,19 @@ define([
         });
 
         // Initiating lists palette
-        var levelButton = document.getElementById("list");
-        var levels = [
+        var listButton = document.getElementById("list");
+        var listoptions = [
             {"id": 9, "title": "ordered list", "cmd":"insertorderedList"},
             {"id": 10, "title": "unordered list", "cmd":"insertUnorderedList"},
         ];
-        levelpalette = new toolpalette.FilterPalette(levelButton, undefined);
-        levelpalette.setCategories(levels);
-        levelpalette.addEventListener('filter', function () {
-            levelpalette.popDown();
+        listpalette = new listpalette.Listpalette(listButton, undefined);
+        listpalette.setCategories(listoptions);
+        listpalette.addEventListener('list', function () {
+            listpalette.popDown();
         });
 
         document.getElementById("9").addEventListener("click",function(){
-            richTextFeild.document.execCommand("insertorderedList",false,null);
+            richTextFeild.document.execCommand("insertorderedList",false,"A");
         });
         document.getElementById("10").addEventListener("click",function(){
             richTextFeild.document.execCommand("insertUnorderedList",false,null);
