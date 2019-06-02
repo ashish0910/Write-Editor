@@ -3,11 +3,15 @@
 }
 
 #main-toolbar #edit-text {
-  background-image: url(../icons/font-text.svg);
+  background-image: url(../icons/scissors.svg);
 }
 
 #main-toolbar #paragraph {
-  background-image: url(../icons/paragraph-bar.svg);
+  background-image: url(../icons/paragraph.svg);
+}
+
+#main-toolbar #list {
+  background-image: url(../icons/list-none.svg);
 }
 
 #textarea {
