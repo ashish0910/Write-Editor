@@ -7,7 +7,8 @@ define([
     "activity/palettes/edit-text-palette",
     "activity/palettes/paragraph-palette",
     "activity/palettes/list-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette) {
+    "sugar-web/graphics/colorpalette",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -88,6 +89,15 @@ define([
         document.getElementById("10").addEventListener("click",function(){
             richTextFeild.document.execCommand("insertUnorderedList",false,null);
         });
+
+        // Initiating colour palette
+        var colorButton = document.getElementById("color-button");
+        var changeColorPalette = new colorpalette.ColorPalette(colorButton);
+        changeColorPalette.setColor('rgb(150, 0, 0)');
+		changeColorPalette.addEventListener('colorChange', function(e) {
+            console.log(e.detail.color);
+		});
+
 
 	});
 
