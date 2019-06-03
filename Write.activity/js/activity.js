@@ -8,7 +8,8 @@ define([
     "activity/palettes/paragraph-palette",
     "activity/palettes/list-palette",
     "sugar-web/graphics/colorpalette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette) {
+    "activity/palettes/format-text-palette",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, toolpalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -108,7 +109,7 @@ define([
             var backhex = rgb2hex(backrgb);
             richTextFeild.document.execCommand("hiliteColor",false,backhex);
         });
-
+        // hack to convert rgb to hex
         function rgb2hex(rgb){
             rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
             return (rgb && rgb.length === 4) ? "#" +
@@ -117,7 +118,20 @@ define([
              ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
            }
 
-
+        // initiating the format text palette (for bold/italic/strikethrough/underline)
+        var levelButton = document.getElementById("format-text");
+        var levels = [
+            {"id": 11, "title": "bold", "cmd":"bold"},
+            {"id": 12, "title": "italic", "cmd":"italic"},
+            {"id": 13, "title": "underline"},
+            {"id": 13, "title": "strikethrough"},
+        ];
+        levelpalette = new toolpalette.FilterPalette(levelButton, undefined);
+        levelpalette.setCategories(levels);
+        levelpalette.addEventListener('filter', function () {
+            levelpalette.popDown();
+        });
+  
 	});
 
 });

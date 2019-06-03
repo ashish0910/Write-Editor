@@ -6,6 +6,10 @@
   background-image: url(../icons/scissors.svg);
 }
 
+#main-toolbar #format-text {
+  background-image: url(../icons/format-text.svg);
+}
+
 #main-toolbar #paragraph {
   background-image: url(../icons/paragraph.svg);
 }
