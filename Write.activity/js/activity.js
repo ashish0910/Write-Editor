@@ -9,7 +9,7 @@ define([
     "activity/palettes/list-palette",
     "sugar-web/graphics/colorpalette",
     "activity/palettes/format-text-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, toolpalette) {
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -119,17 +119,30 @@ define([
            }
 
         // initiating the format text palette (for bold/italic/strikethrough/underline)
-        var levelButton = document.getElementById("format-text");
-        var levels = [
+        var formatButton = document.getElementById("format-text");
+        var formatoptions = [
             {"id": 11, "title": "bold", "cmd":"bold"},
             {"id": 12, "title": "italic", "cmd":"italic"},
-            {"id": 13, "title": "underline"},
-            {"id": 13, "title": "strikethrough"},
+            {"id": 13, "title": "underline", "cmd":"underline"},
+            {"id": 14, "title": "strikethrough", "cmd":"strikeThrough"}
         ];
-        levelpalette = new toolpalette.FilterPalette(levelButton, undefined);
-        levelpalette.setCategories(levels);
-        levelpalette.addEventListener('filter', function () {
-            levelpalette.popDown();
+        formatpalette = new formatpalette.Formatpalette(formatButton, undefined);
+        formatpalette.setCategories(formatoptions);
+        formatpalette.addEventListener('format', function () {
+            formatpalette.popDown();
+        });
+
+        document.getElementById("11").addEventListener("click",function(){
+            richTextFeild.document.execCommand("bold",false,null);
+        })
+        document.getElementById("12").addEventListener("click",function(){
+            richTextFeild.document.execCommand("italic",false,null);
+        });
+        document.getElementById("13").addEventListener("click",function(){
+            richTextFeild.document.execCommand("underline",false,null);
+        });
+        document.getElementById("14").addEventListener("click",function(){
+            richTextFeild.document.execCommand("strikeThrough",false,null);
         });
   
 	});
