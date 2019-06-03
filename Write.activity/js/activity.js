@@ -90,13 +90,34 @@ define([
             richTextFeild.document.execCommand("insertUnorderedList",false,null);
         });
 
-        // Initiating colour palette
-        var colorButton = document.getElementById("color-button");
-        var changeColorPalette = new colorpalette.ColorPalette(colorButton);
-        changeColorPalette.setColor('rgb(150, 0, 0)');
-		changeColorPalette.addEventListener('colorChange', function(e) {
-            console.log(e.detail.color);
-		});
+        // Initiating colour palette for foreground and background
+        var forecolorButton = document.getElementById("color-button-1");
+        var changeForeColorPalette = new colorpalette.ColorPalette(forecolorButton);
+        changeForeColorPalette.setColor('rgb(150, 0, 0)');
+		changeForeColorPalette.addEventListener('colorChange', function(e) {
+            var forergb = e.detail.color;
+            var forehex = rgb2hex(forergb);
+            console.log(forehex);
+            richTextFeild.document.execCommand("foreColor",false,forehex);
+        });
+        
+        var backcolorButton = document.getElementById("color-button-2");
+        var changeBackColorPalette = new colorpalette.ColorPalette(backcolorButton);
+        changeBackColorPalette.setColor('rgb(0, 0, 150)');
+		changeBackColorPalette.addEventListener('colorChange', function(e) {
+            var backrgb = e.detail.color;
+            var backhex = rgb2hex(backrgb);
+            console.log(backhex);
+            richTextFeild.document.execCommand("hiliteColor",false,backhex);
+        });
+
+        function rgb2hex(rgb){
+            rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+            return (rgb && rgb.length === 4) ? "#" +
+             ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+             ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+             ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
+           }
 
 
 	});
