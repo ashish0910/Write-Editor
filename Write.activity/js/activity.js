@@ -97,7 +97,6 @@ define([
 		changeForeColorPalette.addEventListener('colorChange', function(e) {
             var forergb = e.detail.color;
             var forehex = rgb2hex(forergb);
-            console.log(forehex);
             richTextFeild.document.execCommand("foreColor",false,forehex);
         });
         
@@ -107,7 +106,6 @@ define([
 		changeBackColorPalette.addEventListener('colorChange', function(e) {
             var backrgb = e.detail.color;
             var backhex = rgb2hex(backrgb);
-            console.log(backhex);
             richTextFeild.document.execCommand("hiliteColor",false,backhex);
         });
 
