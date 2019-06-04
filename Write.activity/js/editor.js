@@ -1,14 +1,11 @@
+// Script to making iframe editable
 var showingSourceCode = false;
 var isInEditMode = true;
+
 function enableEditMode() {
     richTextFeild.document.designMode = 'on' ;
 }
-function execCmd(command) {
-    richTextFeild.document.execCommand(command,false,null);
-}
-function execCommandWithArg(command,arg){
-    richTextFeild.document.execCommand(command,false,arg);
-}
+// function to get source html of iframe
 function toggleSource(){
     if(showingSourceCode){
         richTextFeild.document.getElementsByTagName('body')[0].innerHTML = richTextFeild.document.getElementsByTagName('body')[0].textContent ;
@@ -18,6 +15,7 @@ function toggleSource(){
             showingSourceCode = true;
         }
 }
+// function to get back to edit mode
 function toggleEdit(){
     if(isInEditMode){
         richTextFeild.document.designMode = 'off' ;
