@@ -41,18 +41,10 @@ define([
       var that = this;
   
       function popDownOnButtonClick(event) {
-        for (var i = 0; i < buttons.length; i++) {
-          buttons[i].style.border = '0px solid #000';
-        }
-        event.target.style.border = '1px solid #f00';
         that.popDown();
       }
       for (var i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener('click', function(e) {
-          for (var i = 0; i < buttons.length; i++) {
-            buttons[i].style.border = '0px solid #000';
-          }
-          e.target.style.border = '1px solid #f00';
           that.fontChangeEvent.detail.family = e.target.title;
           that.getPalette().dispatchEvent(that.fontChangeEvent);
           that.popDown();

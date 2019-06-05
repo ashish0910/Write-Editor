@@ -148,11 +148,12 @@ define([
 
         // Initialise font palette
         var fontButton = document.getElementById("font-button");
-        fontPalette = new fontPalette.Fontpalette(fontButton); 
-        
+        fontPalette = new fontPalette.Fontpalette(fontButton);
+        // Set Arial as default font 
+        richTextFeild.document.execCommand("fontName",false,"Arial");
         fontPalette.addEventListener('fontChange', function(e) {
 			var newfont = e.detail.family;
-			console.log(newfont);
+            richTextFeild.document.execCommand("fontName",false,newfont);
         });
         
 	});
