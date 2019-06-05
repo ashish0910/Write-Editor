@@ -51,12 +51,13 @@ define(["sugar-web/graphics/palette"], function (palette) {
             if (formatIndex == -1) {
                 return;
             }
-            console.log(this.buttons[formatIndex].className);
-            if(this.buttons[formatIndex].className == 'toolbutton palette-button palette-button-notselected'){
-                this.buttons[formatIndex].className = 'toolbutton palette-button palette-button-selected';
-            } else {
-                this.buttons[formatIndex].className = 'toolbutton palette-button palette-button-notselected';
-            }
+            // Removed highlighting of format buttons to avoid confusion for user
+            // console.log(this.buttons[formatIndex].className);
+            // if(this.buttons[formatIndex].className == 'toolbutton palette-button palette-button-notselected'){
+            //     this.buttons[formatIndex].className = 'toolbutton palette-button palette-button-selected';
+            // } else {
+            //     this.buttons[formatIndex].className = 'toolbutton palette-button palette-button-notselected';
+            // }
         
             that.getPalette().dispatchEvent(that.formatEvent);
         }

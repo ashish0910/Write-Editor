@@ -149,7 +149,12 @@ define([
         // Initialise font palette
         var fontButton = document.getElementById("font-button");
         fontPalette = new fontPalette.Fontpalette(fontButton); 
-  
+        
+        fontPalette.addEventListener('fontChange', function(e) {
+			var newfont = e.detail.family;
+			console.log(newfont);
+        });
+        
 	});
 
 });
