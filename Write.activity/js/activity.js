@@ -9,7 +9,8 @@ define([
     "activity/palettes/list-palette",
     "sugar-web/graphics/colorpalette",
     "activity/palettes/format-text-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette) {
+    "activity/palettes/font-palette",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -144,6 +145,10 @@ define([
         document.getElementById("14").addEventListener("click",function(){
             richTextFeild.document.execCommand("strikeThrough",false,null);
         });
+
+        // Initialise font palette
+        var fontButton = document.getElementById("font-button");
+        fontPalette = new fontPalette.Fontpalette(fontButton); 
   
 	});
 
