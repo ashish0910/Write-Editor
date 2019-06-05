@@ -33,16 +33,16 @@ define([
             editpalette.popDown();
         });
         document.getElementById("1").addEventListener("click",function(){
-            richTextFeild.document.execCommand("copy",false,null);
+            richTextField.document.execCommand("copy",false,null);
         })
         document.getElementById("2").addEventListener("click",function(){
-            richTextFeild.document.execCommand("paste",false,null);
+            richTextField.document.execCommand("paste",false,null);
         });
         document.getElementById("3").addEventListener("click",function(){
-            richTextFeild.document.execCommand("undo",false,null);
+            richTextField.document.execCommand("undo",false,null);
         });
         document.getElementById("4").addEventListener("click",function(){
-            richTextFeild.document.execCommand("redo",false,null);
+            richTextField.document.execCommand("redo",false,null);
         });
 
         // Initiating paragraph palette ( Alignment settings )
@@ -61,16 +61,16 @@ define([
         });
 
         document.getElementById("5").addEventListener("click",function(){
-            richTextFeild.document.execCommand("justifyLeft",false,null);
+            richTextField.document.execCommand("justifyLeft",false,null);
         })
         document.getElementById("6").addEventListener("click",function(){
-            richTextFeild.document.execCommand("justifyRight",false,null);
+            richTextField.document.execCommand("justifyRight",false,null);
         });
         document.getElementById("7").addEventListener("click",function(){
-            richTextFeild.document.execCommand("justifyCenter",false,null);
+            richTextField.document.execCommand("justifyCenter",false,null);
         });
         document.getElementById("8").addEventListener("click",function(){
-            richTextFeild.document.execCommand("justifyFull",false,null);
+            richTextField.document.execCommand("justifyFull",false,null);
         });
 
         // Initiating lists palette
@@ -86,10 +86,10 @@ define([
         });
 
         document.getElementById("9").addEventListener("click",function(){
-            richTextFeild.document.execCommand("insertorderedList",false,"A");
+            richTextField.document.execCommand("insertorderedList",false,"A");
         });
         document.getElementById("10").addEventListener("click",function(){
-            richTextFeild.document.execCommand("insertUnorderedList",false,null);
+            richTextField.document.execCommand("insertUnorderedList",false,null);
         });
 
         // Initiating colour palette for foreground and background
@@ -99,7 +99,7 @@ define([
 		changeForeColorPalette.addEventListener('colorChange', function(e) {
             var forergb = e.detail.color;
             var forehex = rgb2hex(forergb);
-            richTextFeild.document.execCommand("foreColor",false,forehex);
+            richTextField.document.execCommand("foreColor",false,forehex);
         });
         
         var backcolorButton = document.getElementById("color-button-2");
@@ -108,7 +108,7 @@ define([
 		changeBackColorPalette.addEventListener('colorChange', function(e) {
             var backrgb = e.detail.color;
             var backhex = rgb2hex(backrgb);
-            richTextFeild.document.execCommand("hiliteColor",false,backhex);
+            richTextField.document.execCommand("hiliteColor",false,backhex);
         });
         // hack to convert rgb to hex
         function rgb2hex(rgb){
@@ -134,26 +134,26 @@ define([
         });
 
         document.getElementById("11").addEventListener("click",function(){
-            richTextFeild.document.execCommand("bold",false,null);
+            richTextField.document.execCommand("bold",false,null);
         })
         document.getElementById("12").addEventListener("click",function(){
-            richTextFeild.document.execCommand("italic",false,null);
+            richTextField.document.execCommand("italic",false,null);
         });
         document.getElementById("13").addEventListener("click",function(){
-            richTextFeild.document.execCommand("underline",false,null);
+            richTextField.document.execCommand("underline",false,null);
         });
         document.getElementById("14").addEventListener("click",function(){
-            richTextFeild.document.execCommand("strikeThrough",false,null);
+            richTextField.document.execCommand("strikeThrough",false,null);
         });
 
         // Initialise font palette
         var fontButton = document.getElementById("font-button");
         fontPalette = new fontPalette.Fontpalette(fontButton);
         // Set Arial as default font 
-        richTextFeild.document.execCommand("fontName",false,"Arial");
+        richTextField.document.execCommand("fontName",false,"Arial");
         fontPalette.addEventListener('fontChange', function(e) {
 			var newfont = e.detail.family;
-            richTextFeild.document.execCommand("fontName",false,newfont);
+            richTextField.document.execCommand("fontName",false,newfont);
         });
         
 	});
