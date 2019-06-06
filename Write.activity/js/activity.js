@@ -16,7 +16,14 @@ define([
 	requirejs(['domReady!'], function (doc) {
 
 		// Initialize the activity.
-		activity.setup();
+        activity.setup();
+        
+        // Setting default font settings ( Will be removed after journal integration 
+        // and will be invoked only for new activity)
+        // Set Arial as default font 
+        richTextField.document.execCommand("fontName",false,"Arial");
+        // Set 4 as default font size
+        richTextField.document.execCommand("fontSize",false,"4");
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
@@ -149,11 +156,21 @@ define([
         // Initialise font palette
         var fontButton = document.getElementById("font-button");
         fontPalette = new fontPalette.Fontpalette(fontButton);
-        // Set Arial as default font 
-        richTextField.document.execCommand("fontName",false,"Arial");
         fontPalette.addEventListener('fontChange', function(e) {
 			var newfont = e.detail.family;
             richTextField.document.execCommand("fontName",false,newfont);
+        });
+
+        // Set the functioning of increase and decrease of font size
+        document.getElementById("resize-inc").addEventListener('click',function(e){
+            var cursize = richTextField.document.queryCommandValue ('fontSize');
+            cursize++;
+            richTextField.document.execCommand("fontSize",false,cursize);
+        });
+        document.getElementById("resize-dec").addEventListener('click',function(e){
+            var cursize = richTextField.document.queryCommandValue ('fontSize');
+            cursize--;
+            richTextField.document.execCommand("fontSize",false,cursize);
         });
         
 	});

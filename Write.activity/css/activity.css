@@ -22,6 +22,14 @@
   background-image: url(../icons/font-text.svg);
 }
 
+#main-toolbar #resize-inc{
+  background-image: url(../icons/resize+.svg);
+}
+
+#main-toolbar #resize-dec {
+  background-image: url(../icons/resize-.svg);
+}
+
 #textarea {
   margin: 0px;
   height: 100%;
