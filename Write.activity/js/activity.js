@@ -164,16 +164,57 @@ define([
         });
 
         // Set the functioning of increase and decrease of font size
+        // Increase
         document.getElementById("resize-inc").addEventListener('click',function(e){
             var cursize = richTextField.document.queryCommandValue ('fontSize');
             cursize++;
             richTextField.document.execCommand("fontSize",false,cursize);
         });
+        // Decrease
         document.getElementById("resize-dec").addEventListener('click',function(e){
             var cursize = richTextField.document.queryCommandValue ('fontSize');
             cursize--;
             richTextField.document.execCommand("fontSize",false,cursize);
         });
+
+        // Journal handling ( Load and save )
+
+        // Save in Journal on Stop
+        document.getElementById("stop-button").addEventListener('click', function (event) {
+            
+            var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+            var jsondata = JSON.stringify(data);
+            activity.getDatastoreObject().setDataAsText(jsondata);
+            activity.getDatastoreObject().save(function (error) {
+                if (error === null) {
+                    console.log("write done.");
+                } else {
+                    console.log("write failed.");
+                }
+            });
+            
+        });
+
+        // Load From datastore
+        env.getEnvironment(function(err, environment) {
+            
+            currentenv = environment;
+
+            if (!environment.objectId) {
+                // New instance
+            } else {
+                // Existing instance
+                activity.getDatastoreObject().loadAsText(function(error, metadata, data) {
+                    if (error==null && data!=null) {
+                        html = JSON.parse(data);
+                        richTextField.document.getElementsByTagName('body')[0].innerHTML = html;
+                        console.log(html);
+                    }
+                });
+            }
+        });
+
+        
         
 	});
 
