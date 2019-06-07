@@ -20,10 +20,12 @@ define([
         
         // Setting default font settings ( Will be removed after journal integration 
         // and will be invoked only for new activity)
+        // Set focus on textarea
+        richTextField.focus();
         // Set Arial as default font 
         richTextField.document.execCommand("fontName",false,"Arial");
         // Set 4 as default font size
-        richTextField.document.execCommand("fontSize",false,"4");
+        richTextField.document.execCommand("fontSize",false,"4")
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
