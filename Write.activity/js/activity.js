@@ -25,7 +25,7 @@ define([
         // Set Arial as default font 
         richTextField.document.execCommand("fontName",false,"Arial");
         // Set 4 as default font size
-        richTextField.document.execCommand("fontSize",false,"4")
+        richTextField.document.execCommand("fontSize",false,"4");
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
