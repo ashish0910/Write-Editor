@@ -30,6 +30,10 @@
   background-image: url(../icons/resize-.svg);
 }
 
+#main-toolbar #insert-picture {
+  background-image: url(../icons/insert-picture.svg);
+}
+
 #textarea {
   margin: 0px;
   height: 100%;
