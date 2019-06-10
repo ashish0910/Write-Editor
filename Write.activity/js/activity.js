@@ -10,7 +10,9 @@ define([
     "sugar-web/graphics/colorpalette",
     "activity/palettes/format-text-palette",
     "activity/palettes/font-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette) {
+    "sugar-web/datastore",
+    "sugar-web/graphics/journalchooser",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -195,7 +197,7 @@ define([
             
         });
 
-        // Load From datastore
+        // Load Journal From datastore
         env.getEnvironment(function(err, environment) {
             
             currentenv = environment;
@@ -213,6 +215,22 @@ define([
                 });
             }
         });
+
+        // Insert image Handling
+        document.getElementById("insert-picture").addEventListener('click', function (e) {
+            journalchooser.show(function (entry) {
+                // No selection
+                if (!entry) {
+                    return;
+                }
+                // Get object content
+                var dataentry = new datastore.DatastoreObject(entry.objectId);
+                dataentry.loadAsText(function (err, metadata, data) {
+                    console.log(data);
+                });
+            }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
+        });
+    
 
         
         
