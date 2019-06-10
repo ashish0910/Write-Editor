@@ -226,7 +226,9 @@ define([
                 // Get object content
                 var dataentry = new datastore.DatastoreObject(entry.objectId);
                 dataentry.loadAsText(function (err, metadata, data) {
-                    console.log(data);
+                    img=data.toString();
+                    img = "<img src='" + img + "'>";
+                    richTextField.document.execCommand("insertHTML", false, img);
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
         });
