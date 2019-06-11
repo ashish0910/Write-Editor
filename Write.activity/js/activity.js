@@ -19,9 +19,31 @@ define([
 
 		// Initialize the activity.
         activity.setup();
+
+        // Load From datastore
+        env.getEnvironment(function(err, environment) {
+            
+            currentenv = environment;
+
+            if (!environment.objectId) {
+                // New instance
+                // Set focus on textarea
+                richTextField.focus();
+                // Set Arial as default font 
+                richTextField.document.execCommand("fontName",false,"Arial");
+                // Set 4 as default font size
+                richTextField.document.execCommand("fontSize",false,"4");
+            } else {
+                // Existing instance
+                activity.getDatastoreObject().loadAsText(function(error, metadata, data) {
+                    if (error==null && data!=null) {
+                        html = JSON.parse(data);
+                        richTextField.document.getElementsByTagName('body')[0].innerHTML = html;
+                    }
+                });
+            }
+        });
         
-        // Setting default font settings ( Will be removed after journal integration 
-        // and will be invoked only for new activity)
         // Set focus on textarea
         richTextField.focus();
         // Set Arial as default font 
@@ -197,24 +219,6 @@ define([
             
         });
 
-        // Load Journal From datastore
-        env.getEnvironment(function(err, environment) {
-            
-            currentenv = environment;
-
-            if (!environment.objectId) {
-                // New instance
-            } else {
-                // Existing instance
-                activity.getDatastoreObject().loadAsText(function(error, metadata, data) {
-                    if (error==null && data!=null) {
-                        html = JSON.parse(data);
-                        richTextField.document.getElementsByTagName('body')[0].innerHTML = html;
-                        console.log(html);
-                    }
-                });
-            }
-        });
 
         // Insert image Handling
         document.getElementById("insert-picture").addEventListener('click', function (e) {
@@ -231,10 +235,7 @@ define([
                     richTextField.document.execCommand("insertHTML", false, img);
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
-        });
-    
-
-        
+        });    
         
 	});
 
