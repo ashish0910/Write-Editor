@@ -12,7 +12,8 @@ define([
     "activity/palettes/font-palette",
     "sugar-web/datastore",
     "sugar-web/graphics/journalchooser",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser) {
+    "activity/palettes/image-palette",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser , imagepalette) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -219,15 +220,28 @@ define([
             
         });
 
+        // Initiating edit-text-palette ( for cut/copy/undo/redo )
 
-        // Insert image Handling
-        document.getElementById("insert-picture").addEventListener('click', function (e) {
+		var imageButton = document.getElementById("insert-picture");
+        var options = [
+            {"id": 15, "title": "insert Image" , "cmd":"insert-image"},
+            {"id": 16, "title": "float left", "cmd":"float-left"},
+            {"id": 17, "title": "float right", "cmd":"float-right"},
+        ];
+        imagepalette = new imagepalette.Imagepalette(imageButton, undefined);
+        imagepalette.setCategories(options);
+        imagepalette.addEventListener('image', function () {
+            imagepalette.popDown();
+        });
+        
+        //  Insert image Handling
+        document.getElementById("15").addEventListener('click', function (e) {
             journalchooser.show(function (entry) {
-                // No selection
+                //  No selection
                 if (!entry) {
                     return;
                 }
-                // Get object content
+                //  Get object content
                 var dataentry = new datastore.DatastoreObject(entry.objectId);
                 dataentry.loadAsText(function (err, metadata, data) {
                     img=data.toString();
