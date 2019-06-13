@@ -227,6 +227,8 @@ define([
             {"id": 15, "title": "insert Image" , "cmd":"insert-image"},
             {"id": 16, "title": "float left", "cmd":"float-left"},
             {"id": 17, "title": "float right", "cmd":"float-right"},
+            {"id": 18, "title": "Decrease Size", "cmd":"decrease-size"},
+            {"id": 19, "title": "Increase Size", "cmd":"increase-size"},
         ];
         imagepalette = new imagepalette.Imagepalette(imageButton, undefined);
         imagepalette.setCategories(options);
