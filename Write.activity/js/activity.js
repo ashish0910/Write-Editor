@@ -227,8 +227,9 @@ define([
             {"id": 15, "title": "insert Image" , "cmd":"insert-image"},
             {"id": 16, "title": "float left", "cmd":"float-left"},
             {"id": 17, "title": "float right", "cmd":"float-right"},
-            {"id": 18, "title": "Decrease Size", "cmd":"decrease-size"},
-            {"id": 19, "title": "Increase Size", "cmd":"increase-size"},
+            {"id": 18, "title": "float none", "cmd":"float-none"},
+            {"id": 19, "title": "Decrease Size", "cmd":"decrease-size"},
+            {"id": 20, "title": "Increase Size", "cmd":"increase-size"},
         ];
         imagepalette = new imagepalette.Imagepalette(imageButton, undefined);
         imagepalette.setCategories(options);
@@ -247,7 +248,8 @@ define([
                 var dataentry = new datastore.DatastoreObject(entry.objectId);
                 dataentry.loadAsText(function (err, metadata, data) {
                     img=data.toString();
-                    img = "<img src='" + img + "'>";
+                    var id = "rand" + Math.random();
+                    img = "<img src='" + img + "' id=" + id + " style='float:right;'>";
                     richTextField.document.execCommand("insertHTML", false, img);
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
