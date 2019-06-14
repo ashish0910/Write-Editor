@@ -225,8 +225,10 @@ define([
 		var imageButton = document.getElementById("insert-picture");
         var options = [
             {"id": 15, "title": "insert Image" , "cmd":"insert-image"},
-            {"id": 16, "title": "float left", "cmd":"justifyLeft"},
-            {"id": 17, "title": "float right", "cmd":"justifyRight"},
+            {"id": 16, "title": "Wrap text on right", "cmd":"justifyLeft"},
+            {"id": 17, "title": "Wrap text on left", "cmd":"justifyRight"},
+            {"id": 18, "title": "Increase size", "cmd":"plus-circle"},
+            {"id": 19, "title": "Decrease size", "cmd":"minus-circle"},
         ];
         imagepalette = new imagepalette.Imagepalette(imageButton, undefined);
         imagepalette.setCategories(options);
@@ -262,6 +264,20 @@ define([
 
         document.getElementById("17").addEventListener('click',function(){
             richTextField.document.getElementById(currentImage).style.cssFloat = "right";
+        });
+
+        document.getElementById("18").addEventListener('click',function(){
+            var image = richTextField.document.getElementById(currentImage);
+            var curwidth = image.offsetWidth;
+            curwidth=curwidth+20;
+            image.style.width=curwidth+"px";
+        });
+
+        document.getElementById("19").addEventListener('click',function(){
+            var image = richTextField.document.getElementById(currentImage);
+            var curwidth = image.offsetWidth;
+            curwidth=curwidth-20;
+            image.style.width=curwidth+"px";
         });
         
 	});
