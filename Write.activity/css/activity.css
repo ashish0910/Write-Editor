@@ -45,6 +45,10 @@
   overflow-x: hidden;
 }
 
+#textarea div {
+  display: inline;
+}
+
 #canvas{
   overflow-x: hidden;
   overflow-y: hidden;

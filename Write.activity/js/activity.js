@@ -220,23 +220,21 @@ define([
             
         });
 
-        // Initiating edit-text-palette ( for cut/copy/undo/redo )
+        // Initiating image-palette ( for insert and floating images )
 
 		var imageButton = document.getElementById("insert-picture");
         var options = [
             {"id": 15, "title": "insert Image" , "cmd":"insert-image"},
-            {"id": 16, "title": "float left", "cmd":"float-left"},
-            {"id": 17, "title": "float right", "cmd":"float-right"},
-            {"id": 18, "title": "float none", "cmd":"float-none"},
-            {"id": 19, "title": "Decrease Size", "cmd":"decrease-size"},
-            {"id": 20, "title": "Increase Size", "cmd":"increase-size"},
+            {"id": 16, "title": "float left", "cmd":"justifyLeft"},
+            {"id": 17, "title": "float right", "cmd":"justifyRight"},
         ];
         imagepalette = new imagepalette.Imagepalette(imageButton, undefined);
         imagepalette.setCategories(options);
         imagepalette.addEventListener('image', function () {
             imagepalette.popDown();
         });
-        
+        // variable to maintain id of current image
+        var currentImage;
         //  Insert image Handling
         document.getElementById("15").addEventListener('click', function (e) {
             journalchooser.show(function (entry) {
@@ -249,11 +247,22 @@ define([
                 dataentry.loadAsText(function (err, metadata, data) {
                     img=data.toString();
                     var id = "rand" + Math.random();
-                    img = "<img src='" + img + "' id=" + id + " style='float:right;'>";
+                    img = "<img src='" + img + "' id=" + id + " style='float:none'>";
                     richTextField.document.execCommand("insertHTML", false, img);
+                    richTextField.document.getElementById(id).addEventListener("click",function(){
+                        currentImage=id;
+                    });
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
-        });    
+        });
+        
+        document.getElementById("16").addEventListener('click',function(){
+            richTextField.document.getElementById(currentImage).style.cssFloat = "left";
+        });
+
+        document.getElementById("17").addEventListener('click',function(){
+            richTextField.document.getElementById(currentImage).style.cssFloat = "right";
+        });
         
 	});
 
