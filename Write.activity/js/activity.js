@@ -12,8 +12,7 @@ define([
     "activity/palettes/font-palette",
     "sugar-web/datastore",
     "sugar-web/graphics/journalchooser",
-    "activity/palettes/image-palette",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser , imagepalette) {
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser ) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -95,10 +94,24 @@ define([
         });
 
         document.getElementById("5").addEventListener("click",function(){
-            richTextField.document.execCommand("justifyLeft",false,null);
+   
+            if(!currentImage){
+                richTextField.document.execCommand("justifyLeft",false,null);
+            } else {
+                // Float left for images
+                var image = richTextField.document.getElementById(currentImage);
+                image.style.cssFloat = "left";
+            }
         })
         document.getElementById("6").addEventListener("click",function(){
-            richTextField.document.execCommand("justifyRight",false,null);
+            
+            if(!currentImage){
+                richTextField.document.execCommand("justifyRight",false,null);
+            } else {
+                // Float right for images
+                var image = richTextField.document.getElementById(currentImage);
+                image.style.cssFloat = "right";
+            }
         });
         document.getElementById("7").addEventListener("click",function(){
             richTextField.document.execCommand("justifyCenter",false,null);
@@ -188,57 +201,43 @@ define([
             richTextField.document.execCommand("fontName",false,newfont);
         });
 
-        // Set the functioning of increase and decrease of font size
+        // Set the functioning of increase and decrease of font size and selected image
         // Increase
         document.getElementById("resize-inc").addEventListener('click',function(e){
             var cursize = richTextField.document.queryCommandValue ('fontSize');
+            if(!cursize) cursize=4;
             cursize++;
             richTextField.document.execCommand("fontSize",false,cursize);
+            // Resize for images
+            if(currentImage){
+                var image = richTextField.document.getElementById(currentImage);
+                var curwidth = image.offsetWidth;
+                curwidth=curwidth+20;
+                image.style.width=curwidth+"px";
+            }
         });
         // Decrease
         document.getElementById("resize-dec").addEventListener('click',function(e){
             var cursize = richTextField.document.queryCommandValue ('fontSize');
             cursize--;
             richTextField.document.execCommand("fontSize",false,cursize);
+            // Resize for images
+            if(currentImage){
+                var image = richTextField.document.getElementById(currentImage);
+                var curwidth = image.offsetWidth;
+                curwidth=curwidth-20;
+                image.style.width=curwidth+"px";
+            }
         });
 
-        // Journal handling ( Load and save )
-
-        // Save in Journal on Stop
-        document.getElementById("stop-button").addEventListener('click', function (event) {
-            
-            var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
-            var jsondata = JSON.stringify(data);
-            activity.getDatastoreObject().setDataAsText(jsondata);
-            activity.getDatastoreObject().save(function (error) {
-                if (error === null) {
-                    console.log("write done.");
-                } else {
-                    console.log("write failed.");
-                }
-            });
-            
-        });
-
-        // Initiating image-palette ( for insert and floating images )
-
-		var imageButton = document.getElementById("insert-picture");
-        var options = [
-            {"id": 15, "title": "insert Image" , "cmd":"insert-image"},
-            {"id": 16, "title": "Wrap text on right", "cmd":"justifyLeft"},
-            {"id": 17, "title": "Wrap text on left", "cmd":"justifyRight"},
-            {"id": 18, "title": "Increase size", "cmd":"plus-circle"},
-            {"id": 19, "title": "Decrease size", "cmd":"minus-circle"},
-        ];
-        imagepalette = new imagepalette.Imagepalette(imageButton, undefined);
-        imagepalette.setCategories(options);
-        imagepalette.addEventListener('image', function () {
-            imagepalette.popDown();
-        });
+        // Images Handling
+	
         // variable to maintain id of current image
         var currentImage;
+        var imgSrcs = [];
+
         //  Insert image Handling
-        document.getElementById("15").addEventListener('click', function (e) {
+        document.getElementById("insert-picture").addEventListener('click', function (e) {
             journalchooser.show(function (entry) {
                 //  No selection
                 if (!entry) {
@@ -252,32 +251,56 @@ define([
                     img = "<img src='" + img + "' id=" + id + " style='float:none'>";
                     richTextField.document.execCommand("insertHTML", false, img);
                     richTextField.document.getElementById(id).addEventListener("click",function(){
-                        currentImage=id;
+                    var imgs = richTextField.document.getElementsByTagName("img");
+                    for (var i = 0; i < imgs.length; i++) {
+                        imgSrcs.push(imgs[i].id);
+                    }
+                    console.log(imgSrcs);
+                        if(id==currentImage){
+                            console.log("Unselect mode");
+                            for(var i=0 ; i < imgSrcs.length ; i++){
+                                richTextField.document.getElementById(imgSrcs[i]).style.border = "none";
+                            }
+                            currentImage=null;
+                        } else {
+                            console.log("select mode");
+                            currentImage=id;
+                            for(var i=0 ; i < imgSrcs.length ; i++){
+                                if(imgSrcs[i]!=currentImage){
+                                    richTextField.document.getElementById(imgSrcs[i]).style.border = "none";
+                                } else {
+                                    richTextField.document.getElementById(imgSrcs[i]).style.border = "4px solid black";
+                                }
+                            }
+                        }
+                        
                     });
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
         });
         
-        document.getElementById("16").addEventListener('click',function(){
-            richTextField.document.getElementById(currentImage).style.cssFloat = "left";
-        });
+        
+        // Journal handling ( save )
 
-        document.getElementById("17").addEventListener('click',function(){
-            richTextField.document.getElementById(currentImage).style.cssFloat = "right";
-        });
-
-        document.getElementById("18").addEventListener('click',function(){
-            var image = richTextField.document.getElementById(currentImage);
-            var curwidth = image.offsetWidth;
-            curwidth=curwidth+20;
-            image.style.width=curwidth+"px";
-        });
-
-        document.getElementById("19").addEventListener('click',function(){
-            var image = richTextField.document.getElementById(currentImage);
-            var curwidth = image.offsetWidth;
-            curwidth=curwidth-20;
-            image.style.width=curwidth+"px";
+        // Save in Journal on Stop
+        document.getElementById("stop-button").addEventListener('click', function (event) {
+            
+            // Remove image border's if image left selected
+            for(var i=0 ; i < imgSrcs.length ; i++){
+                richTextField.document.getElementById(imgSrcs[i]).style.border = "none";
+            }
+            // Journal handling
+            var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+            var jsondata = JSON.stringify(data);
+            activity.getDatastoreObject().setDataAsText(jsondata);
+            activity.getDatastoreObject().save(function (error) {
+                if (error === null) {
+                    console.log("write done.");
+                } else {
+                    console.log("write failed.");
+                }
+            });
+            
         });
         
 	});
