@@ -12,7 +12,8 @@ define([
     "activity/palettes/font-palette",
     "sugar-web/datastore",
     "sugar-web/graphics/journalchooser",
-], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser ) {
+    "activity/palettes/export-palette",
+], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser , exportpalette ) {
 
 	// Manipulate the DOM only when it is ready.
 	requirejs(['domReady!'], function (doc) {
@@ -301,6 +302,20 @@ define([
                 }
             });
             
+        });
+
+        // Initiating export-palette ( for cut/copy/undo/redo )
+
+		var exportButton = document.getElementById("export");
+        var options = [
+            {"id": 15, "title": "export to txt" , "cmd":"save-as-txt"},
+            {"id": 16, "title": "export to html", "cmd":"save-as-html"},
+            {"id": 17, "title": "export to pdf", "cmd":"save-as-pdf"},
+        ];
+        exportpalette = new exportpalette.Exportpalette(exportButton, undefined);
+        exportpalette.setCategories(options);
+        exportpalette.addEventListener('export', function () {
+            exportpalette.popDown();
         });
         
 	});
