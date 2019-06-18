@@ -318,6 +318,18 @@ define([
             exportpalette.popDown();
         });
         
+        // save as html
+        document.getElementById("16").addEventListener('click',function(){
+            var content = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+            var link = document.createElement('a');
+            var mimeType='text/html';
+            link.setAttribute('download','download.html');
+            link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(content));
+            document.body.append(link)
+            link.click();
+            document.body.removeChild(link)
+        });
+
 	});
 
 });
