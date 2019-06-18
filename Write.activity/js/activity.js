@@ -317,6 +317,18 @@ define([
         exportpalette.addEventListener('export', function () {
             exportpalette.popDown();
         });
+
+        // save as txt
+        document.getElementById("15").addEventListener('click',function(){
+            var content = richTextField.document.getElementsByTagName('body')[0].textContent ;
+            var link = document.createElement('a');
+            var mimeType='text/plain';
+            link.setAttribute('download','download.txt');
+            link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(content));
+            document.body.append(link);
+            link.click();
+            document.body.removeChild(link);
+        });
         
         // save as html
         document.getElementById("16").addEventListener('click',function(){
@@ -325,9 +337,9 @@ define([
             var mimeType='text/html';
             link.setAttribute('download','download.html');
             link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(content));
-            document.body.append(link)
+            document.body.append(link);
             link.click();
-            document.body.removeChild(link)
+            document.body.removeChild(link);
         });
 
 	});
