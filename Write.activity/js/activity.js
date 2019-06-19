@@ -226,7 +226,7 @@ define([
             if(currentImage){
                 var image = richTextField.document.getElementById(currentImage);
                 var curwidth = image.offsetWidth;
-                curwidth=curwidth-20;
+                curwidth=curwidth-80;
                 image.style.width=curwidth+"px";
             }
         });
