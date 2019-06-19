@@ -236,7 +236,7 @@ define([
         // variable to maintain id of current image
         var currentImage;
         var imgSrcs = [];
-
+        var borderurl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAM4SURBVHhe7du9bRtBFIVRNeHcLaoXV6HMgZpw7EwVOFDgTJk8GxgwiMc7GHl34fU7B7gZgeHPfgRIgg8AAAAAAAAAAAAAAAAAH/Q09n7CDlEdtPe2J4i+BDKZQHoTyGQC6U0gkwmkN4FMJpDeBDKZQHoTyGQC6U0gkwmkN4FM9jL2xdpue/2r62LvHaI6yOyKO0R1kNkVd4jqILMr7hDVQWZX3CGqg8yuuENUB+29r2OfrO2217+6LvbeIaqD9p7fQXrzO8hkAulNIJMJpDeBTCaQ3gQymUB6E8hkAulNIJMJpDeBTCaQ3gQymUB6E8hkAuntcWy7Bu7t3v9Fnseq29/bIaqD7u1t7PZBvI5Vt/1z2xME92x/qrq9rrZ9HruUH2O3D+LbGPwNgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUBwuUCe7uxt7PZBvI5Vt53tcQw2lwukurN7b4uEPrY3xNs3yd97Gauukeex6vZpp6ju7N477cHwT9he7+o62HunqA7eewLpRSCLE0gvAlmcQHoRyOIE0otAFieQXgSyOIH0IpDFCaQXgSxOIL0IZHEC6UUgixNILwJZnEB6Ecjifo59tzbbXu/qOth7p6gONrvCTlEdbHaFnaI62OwKO0V1sNkVdorq4L3nQ3qv+ZC+OF/z9uJr3sUJpBeBLE4gvQhkcQLpRSCLE0gvAlmcQHr5rwKBvQkEAAAAAAAAAAAAAACAD3p4+AULle55ucyNGwAAAABJRU5ErkJggg=="
         //  Insert image Handling
         document.getElementById("insert-picture").addEventListener('click', function (e) {
             journalchooser.show(function (entry) {
@@ -260,7 +260,9 @@ define([
                         if(id==currentImage){
                             console.log("Unselect mode");
                             for(var i=0 ; i < imgSrcs.length ; i++){
-                                richTextField.document.getElementById(imgSrcs[i]).style.border = "none";
+                                var i = richTextField.document.getElementById(imgSrcs[i]);
+                                i.style.border = "none";
+                                i.style.borderImage = "none";
                             }
                             currentImage=null;
                         } else {
@@ -268,9 +270,13 @@ define([
                             currentImage=id;
                             for(var i=0 ; i < imgSrcs.length ; i++){
                                 if(imgSrcs[i]!=currentImage){
-                                    richTextField.document.getElementById(imgSrcs[i]).style.border = "none";
+                                    var i = richTextField.document.getElementById(imgSrcs[i]);
+                                    i.style.border = "none";
+                                    i.style.borderImage = "none";
                                 } else {
-                                    richTextField.document.getElementById(imgSrcs[i]).style.border = "4px solid black";
+                                    var i = richTextField.document.getElementById(imgSrcs[i]);
+                                    i.style.border = "30px solid transparent";
+                                    i.style.borderImage = "url("+borderurl+") 45 round";
                                 }
                             }
                         }
@@ -288,7 +294,9 @@ define([
             
             // Remove image border's if image left selected
             for(var i=0 ; i < imgSrcs.length ; i++){
-                richTextField.document.getElementById(imgSrcs[i]).style.border = "none";
+                var i = richTextField.document.getElementById(imgSrcs[i]);
+                i.style.border = "none";
+                i.style.borderImage = "none";
             }
             // Journal handling
             var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
@@ -320,6 +328,12 @@ define([
 
         // save as txt
         document.getElementById("15").addEventListener('click',function(){
+            // Remove image border's if image left selected
+            for(var i=0 ; i < imgSrcs.length ; i++){
+                var i = richTextField.document.getElementById(imgSrcs[i]);
+                i.style.border = "none";
+                i.style.borderImage = "none";
+            }
             var content = richTextField.document.getElementsByTagName('body')[0].textContent ;
             var link = document.createElement('a');
             var mimeType='text/plain';
@@ -332,6 +346,12 @@ define([
         
         // save as html
         document.getElementById("16").addEventListener('click',function(){
+            // Remove image border's if image left selected
+            for(var i=0 ; i < imgSrcs.length ; i++){
+                var i = richTextField.document.getElementById(imgSrcs[i]);
+                i.style.border = "none";
+                i.style.borderImage = "none";
+            }
             var content = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
             var link = document.createElement('a');
             var mimeType='text/html';
