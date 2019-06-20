@@ -362,6 +362,17 @@ define([
             document.body.removeChild(link);
         });
 
+        // save as PDF
+        document.getElementById("17").addEventListener('click',function(){
+            // Remove image border's if image left selected
+            for(var i=0 ; i < imgSrcs.length ; i++){
+                var i = richTextField.document.getElementById(imgSrcs[i]);
+                i.style.border = "none";
+                i.style.borderImage = "none";
+            }
+            downloadPDF();
+        });
+
 	});
 
 });
