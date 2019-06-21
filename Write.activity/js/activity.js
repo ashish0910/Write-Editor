@@ -373,6 +373,9 @@ define([
             downloadPDF();
         });
 
+        // Link presence palette
+        var palette = new presencepalette.PresencePalette(document.getElementById("network-button"), undefined);
+
 	});
 
 });
