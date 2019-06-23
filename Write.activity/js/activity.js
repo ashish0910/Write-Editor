@@ -16,7 +16,7 @@ define([
 ], function (activity, env, icon, webL10n, presencepalette, editpalette , parapalette , listpalette , colorpalette, formatpalette , fontPalette , datastore , journalchooser , exportpalette ) {
 
 	// Manipulate the DOM only when it is ready.
-	requirejs(['domReady!'], function (doc) {
+	requirejs(['domReady!', 'humane'], function (doc,humane) {
 
 		// Initialize the activity.
         activity.setup();
@@ -78,9 +78,11 @@ define([
         });
         document.getElementById("1").addEventListener("click",function(){
             richTextField.document.execCommand("copy",false,null);
+            updateContent();
         })
         document.getElementById("2").addEventListener("click",function(){
             richTextField.document.execCommand("paste",false,null);
+            updateContent();
         });
         document.getElementById("3").addEventListener("click",function(){
             richTextField.document.execCommand("undo",false,null);
@@ -113,6 +115,7 @@ define([
                 var image = richTextField.document.getElementById(currentImage);
                 image.style.cssFloat = "left";
             }
+            updateContent();
         })
         document.getElementById("6").addEventListener("click",function(){
             
@@ -123,12 +126,15 @@ define([
                 var image = richTextField.document.getElementById(currentImage);
                 image.style.cssFloat = "right";
             }
+            updateContent();
         });
         document.getElementById("7").addEventListener("click",function(){
             richTextField.document.execCommand("justifyCenter",false,null);
+            updateContent();
         });
         document.getElementById("8").addEventListener("click",function(){
             richTextField.document.execCommand("justifyFull",false,null);
+            updateContent();
         });
 
         // Initiating lists palette
@@ -145,9 +151,11 @@ define([
 
         document.getElementById("9").addEventListener("click",function(){
             richTextField.document.execCommand("insertorderedList",false,"A");
+            updateContent();
         });
         document.getElementById("10").addEventListener("click",function(){
             richTextField.document.execCommand("insertUnorderedList",false,null);
+            updateContent();
         });
 
         // Initiating colour palette for foreground and background
@@ -158,6 +166,7 @@ define([
             var forergb = e.detail.color;
             var forehex = rgb2hex(forergb);
             richTextField.document.execCommand("foreColor",false,forehex);
+            updateContent();
         });
         
         var backcolorButton = document.getElementById("color-button-2");
@@ -167,6 +176,7 @@ define([
             var backrgb = e.detail.color;
             var backhex = rgb2hex(backrgb);
             richTextField.document.execCommand("hiliteColor",false,backhex);
+            updateContent();
         });
         // hack to convert rgb to hex
         function rgb2hex(rgb){
@@ -193,15 +203,19 @@ define([
 
         document.getElementById("11").addEventListener("click",function(){
             richTextField.document.execCommand("bold",false,null);
+            updateContent();
         })
         document.getElementById("12").addEventListener("click",function(){
             richTextField.document.execCommand("italic",false,null);
+            updateContent();
         });
         document.getElementById("13").addEventListener("click",function(){
             richTextField.document.execCommand("underline",false,null);
+            updateContent();
         });
         document.getElementById("14").addEventListener("click",function(){
             richTextField.document.execCommand("strikeThrough",false,null);
+            updateContent();
         });
 
         // Initialise font palette
@@ -226,6 +240,7 @@ define([
                 curwidth=curwidth+20;
                 image.style.width=curwidth+"px";
             }
+            updateContent();
         });
         // Decrease
         document.getElementById("resize-dec").addEventListener('click',function(e){
@@ -239,6 +254,7 @@ define([
                 curwidth=curwidth-80;
                 image.style.width=curwidth+"px";
             }
+            updateContent();
         });
 
         // Images Handling
@@ -292,6 +308,7 @@ define([
                         }
                         
                     });
+                    updateContent();
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
         });
@@ -414,6 +431,15 @@ define([
             richTextField.document.getElementsByTagName('body')[0].innerHTML = msg.data ;
         };
 
+        var xoLogo = '<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC \'-//W3C//DTD SVG 1.1//EN\'  \'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\' [<!ENTITY stroke_color "#010101"><!ENTITY fill_color "#FFFFFF">]><svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="stock-xo_1_"><path d="M33.233,35.1l10.102,10.1c0.752,0.75,1.217,1.783,1.217,2.932   c0,2.287-1.855,4.143-4.146,4.143c-1.145,0-2.178-0.463-2.932-1.211L27.372,40.961l-10.1,10.1c-0.75,0.75-1.787,1.211-2.934,1.211   c-2.284,0-4.143-1.854-4.143-4.141c0-1.146,0.465-2.184,1.212-2.934l10.104-10.102L11.409,24.995   c-0.747-0.748-1.212-1.785-1.212-2.93c0-2.289,1.854-4.146,4.146-4.146c1.143,0,2.18,0.465,2.93,1.214l10.099,10.102l10.102-10.103   c0.754-0.749,1.787-1.214,2.934-1.214c2.289,0,4.146,1.856,4.146,4.145c0,1.146-0.467,2.18-1.217,2.932L33.233,35.1z" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5"/><circle cx="27.371" cy="10.849" fill="&fill_color;" r="8.122" stroke="&stroke_color;" stroke-width="3.5"/></g></svg>';
+        function generateXOLogoWithColor(color) {
+            var coloredLogo = xoLogo;
+            coloredLogo = coloredLogo.replace("#010101", color.stroke)
+            coloredLogo = coloredLogo.replace("#FFFFFF", color.fill)
+        
+            return "data:image/svg+xml;base64," + btoa(coloredLogo);
+          }
+
         // For loading the initial content for other users ( init )
         var onNetworkUserChanged = function(msg) {
             if (isHost) {
@@ -424,10 +450,24 @@ define([
                     data: data
                 });
             }
+            // handle user enter/exit Notifications
+            var userName = msg.user.name.replace('<', '&lt;').replace('>', '&gt;');
+            var html = "<img style='height:30px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'>"
+            if (msg.move === 1) {
+            humane.log(html+userName+" Joined");
+            }
+
+            if (msg.move === -1) {
+            humane.log(html+userName+" Left");
+            }
         };
         
         // For loading content of other users (update)
         richTextField.document.addEventListener("keyup",function(){
+            updateContent();
+        });
+
+        function updateContent(){
             if(presence){
                 var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
                 presence.sendMessage(presence.getSharedInfo().id, {
@@ -436,7 +476,8 @@ define([
                     data: data
                 });
             }
-        });
+        }
+        
 
 
 	});
