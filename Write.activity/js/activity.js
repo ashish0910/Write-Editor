@@ -43,6 +43,16 @@ define([
                     }
                 });
             }
+
+            // Shared instances
+            if (environment.sharedId) {
+                console.log("Shared instance");
+                presence = activity.getPresenceObject(function(error, network) {
+                    network.onDataReceived(onNetworkDataReceived);
+                    network.onSharedActivityUserChanged(onNetworkUserChanged);
+                });
+            }
+
         });
         
         // Set focus on textarea
@@ -373,8 +383,61 @@ define([
             downloadPDF();
         });
 
+        // Multi User collab.
+
         // Link presence palette
+        var presence = null;
+        var isHost = false;
         var palette = new presencepalette.PresencePalette(document.getElementById("network-button"), undefined);
+        palette.addEventListener('shared', function() {
+            palette.popDown();
+            console.log("Want to share");
+            presence = activity.getPresenceObject(function(error, network) {
+                if (error) {
+                    console.log("Sharing error");
+                    return;
+                }
+                network.createSharedActivity('org.sugarlabs.Write', function(groupId) {
+                    console.log("Activity shared");
+                    isHost = true;
+                });
+                network.onDataReceived(onNetworkDataReceived);
+                network.onSharedActivityUserChanged(onNetworkUserChanged);
+            });
+        });
+
+        var onNetworkDataReceived = function(msg) {
+            if (presence.getUserInfo().networkId === msg.user.networkId) {
+                return;
+            }
+            // Changes made by user in presence will be handled here
+            richTextField.document.getElementsByTagName('body')[0].innerHTML = msg.data ;
+        };
+
+        // For loading the initial content for other users ( init )
+        var onNetworkUserChanged = function(msg) {
+            if (isHost) {
+                var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+                presence.sendMessage(presence.getSharedInfo().id, {
+                    user: presence.getUserInfo(),
+                    action: 'init',
+                    data: data
+                });
+            }
+        };
+        
+        // For loading content of other users (update)
+        richTextField.document.addEventListener("keyup",function(){
+            if(presence){
+                var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+                presence.sendMessage(presence.getSharedInfo().id, {
+                    user: presence.getUserInfo(),
+                    action: 'update',
+                    data: data
+                });
+            }
+        });
+
 
 	});
 
