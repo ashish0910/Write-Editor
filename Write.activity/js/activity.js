@@ -52,9 +52,16 @@ define([
                     network.onSharedActivityUserChanged(onNetworkUserChanged);
                 });
             }
+            // Create Listeners for images on start of activity
+            imageHandler();
 
+        });
+
+        function imageHandler() {
             // Create Listeners for images on start of activity
             var imgs = richTextField.document.getElementsByTagName("img");
+            console.log(imgs);
+            console.log(imgs.length);
             for (var i = 0; i < imgs.length; i++) {
                 imgSrcs.push(imgs[i].id);
             }
@@ -82,9 +89,7 @@ define([
                     
                 })
               });
-
-
-        });
+        }
         
         // Set focus on textarea
         richTextField.focus();
@@ -332,6 +337,7 @@ define([
                         
                     });
                     updateContent();
+                    imageHandler();
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
         });
@@ -343,11 +349,7 @@ define([
         document.getElementById("stop-button").addEventListener('click', function (event) {
             
             // Remove image border's if image left selected
-            for(var i=0 ; i < imgSrcs.length ; i++){
-                var i = richTextField.document.getElementById(imgSrcs[i]);
-                i.style.border = "none";
-                i.style.borderImage = "none";
-            }
+            removeSelection();
             // Journal handling
             var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
             var jsondata = JSON.stringify(data);
@@ -376,14 +378,19 @@ define([
             exportpalette.popDown();
         });
 
+        // Remove image selection
+        function removeSelection(){
+            for(var i=0 ; i < imgSrcs.length ; i++){
+                var im = richTextField.document.getElementById(imgSrcs[i]);
+                im.style.border = "none";
+                im.style.borderImage = "none";
+            }
+        }
+
         // save as txt
         document.getElementById("15").addEventListener('click',function(){
             // Remove image border's if image left selected
-            for(var i=0 ; i < imgSrcs.length ; i++){
-                var i = richTextField.document.getElementById(imgSrcs[i]);
-                i.style.border = "none";
-                i.style.borderImage = "none";
-            }
+            removeSelection();
             var content = richTextField.document.getElementsByTagName('body')[0].textContent ;
             var link = document.createElement('a');
             var mimeType='text/plain';
@@ -397,11 +404,7 @@ define([
         // save as html
         document.getElementById("16").addEventListener('click',function(){
             // Remove image border's if image left selected
-            for(var i=0 ; i < imgSrcs.length ; i++){
-                var i = richTextField.document.getElementById(imgSrcs[i]);
-                i.style.border = "none";
-                i.style.borderImage = "none";
-            }
+            removeSelection();
             var content = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
             var link = document.createElement('a');
             var mimeType='text/html';
@@ -415,11 +418,7 @@ define([
         // save as PDF
         document.getElementById("17").addEventListener('click',function(){
             // Remove image border's if image left selected
-            for(var i=0 ; i < imgSrcs.length ; i++){
-                var i = richTextField.document.getElementById(imgSrcs[i]);
-                i.style.border = "none";
-                i.style.borderImage = "none";
-            }
+            removeSelection();
             downloadPDF();
         });
 
