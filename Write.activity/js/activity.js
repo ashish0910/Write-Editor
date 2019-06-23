@@ -53,6 +53,37 @@ define([
                 });
             }
 
+            // Create Listeners for images on start of activity
+            var imgs = richTextField.document.getElementsByTagName("img");
+            for (var i = 0; i < imgs.length; i++) {
+                imgSrcs.push(imgs[i].id);
+            }
+            imgSrcs.forEach(function (id, index) {
+                richTextField.document.getElementById(id).addEventListener("click",function(){
+                    if(id==currentImage){
+                        var i = richTextField.document.getElementById(id);
+                        i.style.border = "none";
+                        i.style.borderImage = "none";
+                        currentImage=null;
+                    } else {
+                        currentImage=id;
+                        imgSrcs.forEach(function(id2,index2){
+                            if(id2==currentImage){
+                                var i = richTextField.document.getElementById(id2);
+                                i.style.border = "30px solid transparent";
+                                i.style.borderImage = "url("+borderurl+") 45 round";
+                            } else {
+                                var i = richTextField.document.getElementById(id2);
+                                i.style.border = "none";
+                                i.style.borderImage = "none";
+                            }
+                        })
+                    }
+                    
+                })
+              });
+
+
         });
         
         // Set focus on textarea
@@ -277,35 +308,27 @@ define([
                     var id = "rand" + Math.random();
                     img = "<img src='" + img + "' id=" + id + " style='float:none'>";
                     richTextField.document.execCommand("insertHTML", false, img);
+                    imgSrcs.push(id);
                     richTextField.document.getElementById(id).addEventListener("click",function(){
-                    var imgs = richTextField.document.getElementsByTagName("img");
-                    for (var i = 0; i < imgs.length; i++) {
-                        imgSrcs.push(imgs[i].id);
-                    }
-                    console.log(imgSrcs);
                         if(id==currentImage){
-                            console.log("Unselect mode");
-                            for(var i=0 ; i < imgSrcs.length ; i++){
-                                var i = richTextField.document.getElementById(imgSrcs[i]);
+                            var i = richTextField.document.getElementById(id);
+                        i.style.border = "none";
+                        i.style.borderImage = "none";
+                        currentImage=null;
+                    } else {
+                        currentImage=id;
+                        imgSrcs.forEach(function(id2,index2){
+                            if(id2==currentImage){
+                                var i = richTextField.document.getElementById(id2);
+                                i.style.border = "30px solid transparent";
+                                i.style.borderImage = "url("+borderurl+") 45 round";
+                            } else {
+                                var i = richTextField.document.getElementById(id2);
                                 i.style.border = "none";
                                 i.style.borderImage = "none";
                             }
-                            currentImage=null;
-                        } else {
-                            console.log("select mode");
-                            currentImage=id;
-                            for(var i=0 ; i < imgSrcs.length ; i++){
-                                if(imgSrcs[i]!=currentImage){
-                                    var i = richTextField.document.getElementById(imgSrcs[i]);
-                                    i.style.border = "none";
-                                    i.style.borderImage = "none";
-                                } else {
-                                    var i = richTextField.document.getElementById(imgSrcs[i]);
-                                    i.style.border = "30px solid transparent";
-                                    i.style.borderImage = "url("+borderurl+") 45 round";
-                                }
-                            }
-                        }
+                        })
+                    }
                         
                     });
                     updateContent();
