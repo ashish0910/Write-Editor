@@ -382,8 +382,10 @@ define([
         function removeSelection(){
             for(var i=0 ; i < imgSrcs.length ; i++){
                 var im = richTextField.document.getElementById(imgSrcs[i]);
-                im.style.border = "none";
-                im.style.borderImage = "none";
+                if(im){
+                    im.style.border = "none";
+                    im.style.borderImage = "none";
+                }
             }
         }
 
