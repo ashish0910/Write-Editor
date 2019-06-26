@@ -20,26 +20,26 @@ define([
 
 		// Initialize the activity.
         activity.setup();
-
+        var text = richTextField.document;
         // Load From datastore
         env.getEnvironment(function(err, environment) {
             
             currentenv = environment;
-
+            
             if (!environment.objectId) {
                 // New instance
                 // Set focus on textarea
                 richTextField.focus();
                 // Set Arial as default font 
-                richTextField.document.execCommand("fontName",false,"Arial");
+                text.execCommand("fontName",false,"Arial");
                 // Set 4 as default font size
-                richTextField.document.execCommand("fontSize",false,"4");
+                text.execCommand("fontSize",false,"4");
             } else {
                 // Existing instance
                 activity.getDatastoreObject().loadAsText(function(error, metadata, data) {
                     if (error==null && data!=null) {
                         html = JSON.parse(data);
-                        richTextField.document.getElementsByTagName('body')[0].innerHTML = html;
+                        text.getElementsByTagName('body')[0].innerHTML = html;
                     }
                 });
             }
@@ -59,16 +59,14 @@ define([
 
         function imageHandler() {
             // Create Listeners for images on start of activity
-            var imgs = richTextField.document.getElementsByTagName("img");
-            console.log(imgs);
-            console.log(imgs.length);
+            var imgs = text.getElementsByTagName("img");
             for (var i = 0; i < imgs.length; i++) {
                 imgSrcs.push(imgs[i].id);
             }
             imgSrcs.forEach(function (id, index) {
-                richTextField.document.getElementById(id).addEventListener("click",function(){
+                text.getElementById(id).addEventListener("click",function(){
                     if(id==currentImage){
-                        var i = richTextField.document.getElementById(id);
+                        var i = text.getElementById(id);
                         i.style.border = "none";
                         i.style.borderImage = "none";
                         currentImage=null;
@@ -76,11 +74,11 @@ define([
                         currentImage=id;
                         imgSrcs.forEach(function(id2,index2){
                             if(id2==currentImage){
-                                var i = richTextField.document.getElementById(id2);
+                                var i = text.getElementById(id2);
                                 i.style.border = "30px solid transparent";
                                 i.style.borderImage = "url("+borderurl+") 45 round";
                             } else {
-                                var i = richTextField.document.getElementById(id2);
+                                var i = text.getElementById(id2);
                                 i.style.border = "none";
                                 i.style.borderImage = "none";
                             }
@@ -94,9 +92,9 @@ define([
         // Set focus on textarea
         richTextField.focus();
         // Set Arial as default font 
-        richTextField.document.execCommand("fontName",false,"Arial");
+        text.execCommand("fontName",false,"Arial");
         // Set 4 as default font size
-        richTextField.document.execCommand("fontSize",false,"4");
+        text.execCommand("fontSize",false,"4");
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
@@ -113,18 +111,18 @@ define([
             editpalette.popDown();
         });
         document.getElementById("1").addEventListener("click",function(){
-            richTextField.document.execCommand("copy",false,null);
+            text.execCommand("copy",false,null);
             updateContent();
         })
         document.getElementById("2").addEventListener("click",function(){
-            richTextField.document.execCommand("paste",false,null);
+            text.execCommand("paste",false,null);
             updateContent();
         });
         document.getElementById("3").addEventListener("click",function(){
-            richTextField.document.execCommand("undo",false,null);
+            text.execCommand("undo",false,null);
         });
         document.getElementById("4").addEventListener("click",function(){
-            richTextField.document.execCommand("redo",false,null);
+            text.execCommand("redo",false,null);
         });
 
         // Initiating paragraph palette ( Alignment settings )
@@ -145,10 +143,10 @@ define([
         document.getElementById("5").addEventListener("click",function(){
    
             if(!currentImage){
-                richTextField.document.execCommand("justifyLeft",false,null);
+                text.execCommand("justifyLeft",false,null);
             } else {
                 // Float left for images
-                var image = richTextField.document.getElementById(currentImage);
+                var image = text.getElementById(currentImage);
                 image.style.cssFloat = "left";
             }
             updateContent();
@@ -156,20 +154,20 @@ define([
         document.getElementById("6").addEventListener("click",function(){
             
             if(!currentImage){
-                richTextField.document.execCommand("justifyRight",false,null);
+                text.execCommand("justifyRight",false,null);
             } else {
                 // Float right for images
-                var image = richTextField.document.getElementById(currentImage);
+                var image = text.getElementById(currentImage);
                 image.style.cssFloat = "right";
             }
             updateContent();
         });
         document.getElementById("7").addEventListener("click",function(){
-            richTextField.document.execCommand("justifyCenter",false,null);
+            text.execCommand("justifyCenter",false,null);
             updateContent();
         });
         document.getElementById("8").addEventListener("click",function(){
-            richTextField.document.execCommand("justifyFull",false,null);
+            text.execCommand("justifyFull",false,null);
             updateContent();
         });
 
@@ -186,11 +184,11 @@ define([
         });
 
         document.getElementById("9").addEventListener("click",function(){
-            richTextField.document.execCommand("insertorderedList",false,"A");
+            text.execCommand("insertorderedList",false,"A");
             updateContent();
         });
         document.getElementById("10").addEventListener("click",function(){
-            richTextField.document.execCommand("insertUnorderedList",false,null);
+            text.execCommand("insertUnorderedList",false,null);
             updateContent();
         });
 
@@ -201,7 +199,7 @@ define([
 		changeForeColorPalette.addEventListener('colorChange', function(e) {
             var forergb = e.detail.color;
             var forehex = rgb2hex(forergb);
-            richTextField.document.execCommand("foreColor",false,forehex);
+            text.execCommand("foreColor",false,forehex);
             updateContent();
         });
         
@@ -211,7 +209,7 @@ define([
 		changeBackColorPalette.addEventListener('colorChange', function(e) {
             var backrgb = e.detail.color;
             var backhex = rgb2hex(backrgb);
-            richTextField.document.execCommand("hiliteColor",false,backhex);
+            text.execCommand("hiliteColor",false,backhex);
             updateContent();
         });
         // hack to convert rgb to hex
@@ -238,19 +236,19 @@ define([
         });
 
         document.getElementById("11").addEventListener("click",function(){
-            richTextField.document.execCommand("bold",false,null);
+            text.execCommand("bold",false,null);
             updateContent();
         })
         document.getElementById("12").addEventListener("click",function(){
-            richTextField.document.execCommand("italic",false,null);
+            text.execCommand("italic",false,null);
             updateContent();
         });
         document.getElementById("13").addEventListener("click",function(){
-            richTextField.document.execCommand("underline",false,null);
+            text.execCommand("underline",false,null);
             updateContent();
         });
         document.getElementById("14").addEventListener("click",function(){
-            richTextField.document.execCommand("strikeThrough",false,null);
+            text.execCommand("strikeThrough",false,null);
             updateContent();
         });
 
@@ -259,19 +257,19 @@ define([
         fontPalette = new fontPalette.Fontpalette(fontButton);
         fontPalette.addEventListener('fontChange', function(e) {
 			var newfont = e.detail.family;
-            richTextField.document.execCommand("fontName",false,newfont);
+            text.execCommand("fontName",false,newfont);
         });
 
         // Set the functioning of increase and decrease of font size and selected image
         // Increase
         document.getElementById("resize-inc").addEventListener('click',function(e){
-            var cursize = richTextField.document.queryCommandValue ('fontSize');
+            var cursize = text.queryCommandValue ('fontSize');
             if(!cursize) cursize=4;
             cursize++;
-            richTextField.document.execCommand("fontSize",false,cursize);
+            text.execCommand("fontSize",false,cursize);
             // Resize for images
             if(currentImage){
-                var image = richTextField.document.getElementById(currentImage);
+                var image = text.getElementById(currentImage);
                 var curwidth = image.offsetWidth;
                 curwidth=curwidth+20;
                 image.style.width=curwidth+"px";
@@ -280,12 +278,12 @@ define([
         });
         // Decrease
         document.getElementById("resize-dec").addEventListener('click',function(e){
-            var cursize = richTextField.document.queryCommandValue ('fontSize');
+            var cursize = text.queryCommandValue ('fontSize');
             cursize--;
-            richTextField.document.execCommand("fontSize",false,cursize);
+            text.execCommand("fontSize",false,cursize);
             // Resize for images
             if(currentImage){
-                var image = richTextField.document.getElementById(currentImage);
+                var image = text.getElementById(currentImage);
                 var curwidth = image.offsetWidth;
                 curwidth=curwidth-80;
                 image.style.width=curwidth+"px";
@@ -312,11 +310,11 @@ define([
                     img=data.toString();
                     var id = "rand" + Math.random();
                     img = "<img src='" + img + "' id=" + id + " style='float:none'>";
-                    richTextField.document.execCommand("insertHTML", false, img);
+                    text.execCommand("insertHTML", false, img);
                     imgSrcs.push(id);
-                    richTextField.document.getElementById(id).addEventListener("click",function(){
+                    text.getElementById(id).addEventListener("click",function(){
                         if(id==currentImage){
-                            var i = richTextField.document.getElementById(id);
+                            var i = text.getElementById(id);
                         i.style.border = "none";
                         i.style.borderImage = "none";
                         currentImage=null;
@@ -324,11 +322,11 @@ define([
                         currentImage=id;
                         imgSrcs.forEach(function(id2,index2){
                             if(id2==currentImage){
-                                var i = richTextField.document.getElementById(id2);
+                                var i = text.getElementById(id2);
                                 i.style.border = "30px solid transparent";
                                 i.style.borderImage = "url("+borderurl+") 45 round";
                             } else {
-                                var i = richTextField.document.getElementById(id2);
+                                var i = text.getElementById(id2);
                                 i.style.border = "none";
                                 i.style.borderImage = "none";
                             }
@@ -351,7 +349,7 @@ define([
             // Remove image border's if image left selected
             removeSelection();
             // Journal handling
-            var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+            var data = text.getElementsByTagName('body')[0].innerHTML ;
             var jsondata = JSON.stringify(data);
             activity.getDatastoreObject().setDataAsText(jsondata);
             activity.getDatastoreObject().save(function (error) {
@@ -381,7 +379,7 @@ define([
         // Remove image selection
         function removeSelection(){
             for(var i=0 ; i < imgSrcs.length ; i++){
-                var im = richTextField.document.getElementById(imgSrcs[i]);
+                var im = text.getElementById(imgSrcs[i]);
                 if(im){
                     im.style.border = "none";
                     im.style.borderImage = "none";
@@ -393,7 +391,7 @@ define([
         document.getElementById("15").addEventListener('click',function(){
             // Remove image border's if image left selected
             removeSelection();
-            var content = richTextField.document.getElementsByTagName('body')[0].textContent ;
+            var content = text.getElementsByTagName('body')[0].textContent ;
             var link = document.createElement('a');
             var mimeType='text/plain';
             link.setAttribute('download','download.txt');
@@ -407,7 +405,7 @@ define([
         document.getElementById("16").addEventListener('click',function(){
             // Remove image border's if image left selected
             removeSelection();
-            var content = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+            var content = text.getElementsByTagName('body')[0].innerHTML ;
             var link = document.createElement('a');
             var mimeType='text/html';
             link.setAttribute('download','download.html');
@@ -452,7 +450,7 @@ define([
                 return;
             }
             // Changes made by user in presence will be handled here
-            richTextField.document.getElementsByTagName('body')[0].innerHTML = msg.data ;
+            text.getElementsByTagName('body')[0].innerHTML = msg.data ;
         };
 
         var xoLogo = '<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC \'-//W3C//DTD SVG 1.1//EN\'  \'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\' [<!ENTITY stroke_color "#010101"><!ENTITY fill_color "#FFFFFF">]><svg enable-background="new 0 0 55 55" height="55px" version="1.1" viewBox="0 0 55 55" width="55px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"><g display="block" id="stock-xo_1_"><path d="M33.233,35.1l10.102,10.1c0.752,0.75,1.217,1.783,1.217,2.932   c0,2.287-1.855,4.143-4.146,4.143c-1.145,0-2.178-0.463-2.932-1.211L27.372,40.961l-10.1,10.1c-0.75,0.75-1.787,1.211-2.934,1.211   c-2.284,0-4.143-1.854-4.143-4.141c0-1.146,0.465-2.184,1.212-2.934l10.104-10.102L11.409,24.995   c-0.747-0.748-1.212-1.785-1.212-2.93c0-2.289,1.854-4.146,4.146-4.146c1.143,0,2.18,0.465,2.93,1.214l10.099,10.102l10.102-10.103   c0.754-0.749,1.787-1.214,2.934-1.214c2.289,0,4.146,1.856,4.146,4.145c0,1.146-0.467,2.18-1.217,2.932L33.233,35.1z" fill="&fill_color;" stroke="&stroke_color;" stroke-width="3.5"/><circle cx="27.371" cy="10.849" fill="&fill_color;" r="8.122" stroke="&stroke_color;" stroke-width="3.5"/></g></svg>';
@@ -467,7 +465,7 @@ define([
         // For loading the initial content for other users ( init )
         var onNetworkUserChanged = function(msg) {
             if (isHost) {
-                var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+                var data = text.getElementsByTagName('body')[0].innerHTML ;
                 presence.sendMessage(presence.getSharedInfo().id, {
                     user: presence.getUserInfo(),
                     action: 'init',
@@ -487,13 +485,13 @@ define([
         };
         
         // For loading content of other users (update)
-        richTextField.document.addEventListener("keyup",function(){
+        text.addEventListener("keyup",function(){
             updateContent();
         });
 
         function updateContent(){
             if(presence){
-                var data = richTextField.document.getElementsByTagName('body')[0].innerHTML ;
+                var data = text.getElementsByTagName('body')[0].innerHTML ;
                 presence.sendMessage(presence.getSharedInfo().id, {
                     user: presence.getUserInfo(),
                     action: 'update',
