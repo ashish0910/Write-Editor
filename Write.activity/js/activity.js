@@ -66,10 +66,10 @@ define([
 
 
         });
-        
+
         // Create Listeners for images on start of activity
         function imageHandler() {
-
+            
             var imgs = text.getElementsByTagName("img");
             if(imgs.length>0){
                 
@@ -491,7 +491,7 @@ define([
             }
             // Changes made by user in presence will be handled here
             text.getElementsByTagName('body')[0].innerHTML = msg.data ;
-
+            imageHandler();
             // Store the changes made by non host users in stack 
             storechangesinstack();
         };
