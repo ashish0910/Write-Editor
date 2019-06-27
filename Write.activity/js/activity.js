@@ -63,7 +63,6 @@ define([
                 });
             }
 
-            imageHandler();
 
         });
         
@@ -71,41 +70,43 @@ define([
         function imageHandler() {
 
             var imgs = text.getElementsByTagName("img");
-            for (var i = 0; i < imgs.length; i++) {
-                imgSrcs.push(imgs[i].id);
+
+            if(imgs.length>0){
+                
+                for (var i = 0; i < imgs.length; i++) {
+                    imgSrcs[i]=imgs[i].id;
+                }
+                
+                imgSrcs.forEach(function (id, index) {
+                    text.getElementById(id).addEventListener("click",function(){
+                        if(id==currentImage){
+                            var image = text.getElementById(id);
+                            image.style.border = "none";
+                            image.style.borderImage = "none";
+                            currentImage=null;
+                        } else {
+                            currentImage=id;
+                            imgSrcs.forEach(function(id2,index2){
+                                if(id2==currentImage){
+                                    var image = text.getElementById(id2);
+                                    image.style.border = "30px solid transparent";
+                                    image.style.borderImage = "url("+borderurl+") 45 round";
+                                } else {
+                                    var image = text.getElementById(id2);
+                                    if(image){
+                                        image.style.border = "none";
+                                        image.style.borderImage = "none";
+                                    }
+                                }
+                            })
+                        }
+                        
+                    })
+                  });
             }
-            imgSrcs.forEach(function (id, index) {
-                text.getElementById(id).addEventListener("click",function(){
-                    if(id==currentImage){
-                        var i = text.getElementById(id);
-                        i.style.border = "none";
-                        i.style.borderImage = "none";
-                        currentImage=null;
-                    } else {
-                        currentImage=id;
-                        imgSrcs.forEach(function(id2,index2){
-                            if(id2==currentImage){
-                                var i = text.getElementById(id2);
-                                i.style.border = "30px solid transparent";
-                                i.style.borderImage = "url("+borderurl+") 45 round";
-                            } else {
-                                var i = text.getElementById(id2);
-                                i.style.border = "none";
-                                i.style.borderImage = "none";
-                            }
-                        })
-                    }
-                    
-                })
-              });
         }
         
-        // Set focus on textarea
-        richTextField.focus();
-        // Set Arial as default font 
-        text.execCommand("fontName",false,"Arial");
-        // Set 4 as default font size
-        text.execCommand("fontSize",false,"4");
+        imageHandler();
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
@@ -351,21 +352,23 @@ define([
                     imgSrcs.push(id);
                     text.getElementById(id).addEventListener("click",function(){
                         if(id==currentImage){
-                            var i = text.getElementById(id);
-                        i.style.border = "none";
-                        i.style.borderImage = "none";
-                        currentImage=null;
+                            var image = text.getElementById(id);
+                            image.style.border = "none";
+                            image.style.borderImage = "none";
+                            currentImage=null;
                     } else {
                         currentImage=id;
                         imgSrcs.forEach(function(id2,index2){
                             if(id2==currentImage){
-                                var i = text.getElementById(id2);
-                                i.style.border = "30px solid transparent";
-                                i.style.borderImage = "url("+borderurl+") 45 round";
+                                var image = text.getElementById(id2);
+                                image.style.border = "30px solid transparent";
+                                image.style.borderImage = "url("+borderurl+") 45 round";
                             } else {
-                                var i = text.getElementById(id2);
-                                i.style.border = "none";
-                                i.style.borderImage = "none";
+                                var image = text.getElementById(id2);
+                                if(image){
+                                    image.style.border = "none";
+                                    image.style.borderImage = "none";
+                                }
                             }
                         })
                     }
@@ -373,7 +376,6 @@ define([
                     });
                     updateContent();
                     storechangesinstack();
-                    imageHandler();
                 });
             }, { mimetype: 'image/png' }, { mimetype: 'image/jpeg' });
         });
