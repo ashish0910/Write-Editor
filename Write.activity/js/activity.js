@@ -45,6 +45,7 @@ define([
                     if (error==null && data!=null) {
                         html = JSON.parse(data);
                         text.getElementsByTagName('body')[0].innerHTML = html;
+                        imageHandler();
                     }
                 });
             }
@@ -70,7 +71,6 @@ define([
         function imageHandler() {
 
             var imgs = text.getElementsByTagName("img");
-
             if(imgs.length>0){
                 
                 for (var i = 0; i < imgs.length; i++) {
@@ -106,7 +106,6 @@ define([
             }
         }
         
-        imageHandler();
 		
 		// Initiating edit-text-palette ( for cut/copy/undo/redo )
 
