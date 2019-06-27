@@ -549,10 +549,14 @@ define([
         function storechangesinstack(){
             if(presence){
             var html = text.getElementsByTagName('body')[0].innerHTML;
-            top++;
-            stack.splice(top, 0, html);
+            if((top!=-1)&&(stack[top]==html)){
+                console.log("No HTML changes");
             }
-            console.log(stack);
+            else{
+                top++;
+                stack.splice(top, 0, html);
+            }
+            }
         }
         
         function undo(){
@@ -565,7 +569,6 @@ define([
                 text.getElementsByTagName('body')[0].innerHTML = stack[top];
                 
             }
-            console.log(stack);
         }
         
         function redo(){
@@ -581,7 +584,6 @@ define([
                     text.getElementsByTagName('body')[0].innerHTML = stack[top];
                 }
             }
-            console.log(stack);
         }
         
 	});
