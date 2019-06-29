@@ -35,10 +35,8 @@ define([
                 // New instance
                 // Set focus on textarea
                 richTextField.focus();
-                // Set Arial as default font 
-                text.execCommand("fontName",false,"Arial");
-                // Set 4 as default font size
-                text.execCommand("fontSize",false,"4");
+                // Set Arial as default font
+                text.getElementsByTagName('body')[0].style.fontFamily = "Arial";
             } else {
                 // Existing instance
                 activity.getDatastoreObject().loadAsText(function(error, metadata, data) {
@@ -412,8 +410,7 @@ define([
 		var exportButton = document.getElementById("export");
         var options = [
             {"id": 15, "title": "export to txt" , "cmd":"save-as-txt"},
-            {"id": 16, "title": "export to html", "cmd":"save-as-html"},
-            {"id": 17, "title": "export to pdf", "cmd":"save-as-pdf"},
+            {"id": 16, "title": "export to pdf", "cmd":"save-as-pdf"},
         ];
         exportpalette = new exportpalette.Exportpalette(exportButton, undefined);
         exportpalette.setCategories(options);
@@ -446,22 +443,8 @@ define([
             document.body.removeChild(link);
         });
         
-        // save as html
-        document.getElementById("16").addEventListener('click',function(){
-            // Remove image border's if image left selected
-            removeSelection();
-            var content = text.getElementsByTagName('body')[0].innerHTML ;
-            var link = document.createElement('a');
-            var mimeType='text/html';
-            link.setAttribute('download','download.html');
-            link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(content));
-            document.body.append(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-
         // save as PDF
-        document.getElementById("17").addEventListener('click',function(){
+        document.getElementById("16").addEventListener('click',function(){
             // Remove image border's if image left selected
             removeSelection();
             downloadPDF();
