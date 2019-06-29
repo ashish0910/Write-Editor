@@ -35,7 +35,7 @@ define([
                 // New instance
                 // Set focus on textarea
                 richTextField.focus();
-                // Set Arial as default font
+                // Set Arial as default
                 text.getElementsByTagName('body')[0].style.fontFamily = "Arial";
             } else {
                 // Existing instance
