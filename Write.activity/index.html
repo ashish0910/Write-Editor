@@ -14,11 +14,11 @@
 <script src="js/export-to-PDF/jspdf.min.js"></script>
 <script src="js/export-to-PDF/html2canvas.js"></script>
 <script src="js/export-to-PDF/script.js"></script>
+<script src="js/carsetretain.js"></script>
 <script data-main="js/loader" src="lib/require.js"></script>
-<script src="js/editor.js"></script>
 </head>
 
-<body onload="enableEditMode();">
+<body>
 <div id="main-toolbar" class="toolbar">
   <button class="toolbutton" id="activity-button" title="Write Activity"></button>
 
@@ -44,7 +44,7 @@
 <!-- The content of your activity goes inside the canvas -->
 <div id="canvas" style="background-color: white;">
 
-  <iframe id="textarea" name="richTextField"></iframe>
+  <div id="textarea" contenteditable="true"></div>
 
 </div>
 </body>

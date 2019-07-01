@@ -20,7 +20,8 @@ define([
 
 		// Initialize the activity.
         activity.setup();
-        var text = richTextField.document;
+        var text = document;
+        var textarea = document.getElementById("textarea");
         // Load From datastore
         
         // Create variable for handling undo-redo in multi user env
@@ -34,15 +35,16 @@ define([
             if (!environment.objectId) {
                 // New instance
                 // Set focus on textarea
-                richTextField.focus();
+                document.getElementById("textarea").focus();
+                text.execCommand("fontSize",false,4);
                 // Set Arial as default
-                text.getElementsByTagName('body')[0].style.fontFamily = "Arial";
+                text.getElementById("textarea").style.fontFamily = "Arial";
             } else {
                 // Existing instance
                 activity.getDatastoreObject().loadAsText(function(error, metadata, data) {
                     if (error==null && data!=null) {
                         html = JSON.parse(data);
-                        text.getElementsByTagName('body')[0].innerHTML = html;
+                        text.getElementById("textarea").innerHTML = html;
                         imageHandler();
                     }
                 });
@@ -68,12 +70,14 @@ define([
         // Create Listeners for images on start of activity
         function imageHandler() {
             
-            var imgs = text.getElementsByTagName("img");
+            var area = text.getElementById("textarea");
+            var imgs = area.getElementsByTagName("img")
             if(imgs.length>0){
                 
                 for (var i = 0; i < imgs.length; i++) {
                     imgSrcs[i]=imgs[i].id;
                 }
+                console.log(imgSrcs);
                 imgSrcs.forEach(function (id, index) {
                     text.getElementById(id).addEventListener("click",function(){
                         if(id==currentImage){
@@ -351,7 +355,8 @@ define([
                     img=data.toString();
                     var id = "rand" + Math.random();
                     img = "<img src='" + img + "' id=" + id + " style='float:none'>";
-                    text.execCommand("insertHTML", false, img);
+                    document.getElementById("textarea").focus();
+                    document.execCommand("insertHTML", false, img);
                     imgSrcs.push(id);
                     text.getElementById(id).addEventListener("click",function(){
                         if(id==currentImage){
@@ -392,7 +397,7 @@ define([
             // Remove image border's if image left selected
             removeSelection();
             // Journal handling
-            var data = text.getElementsByTagName('body')[0].innerHTML ;
+            var data = text.getElementById("textarea").innerHTML ;
             var jsondata = JSON.stringify(data);
             activity.getDatastoreObject().setDataAsText(jsondata);
             activity.getDatastoreObject().save(function (error) {
@@ -433,7 +438,7 @@ define([
         document.getElementById("15").addEventListener('click',function(){
             // Remove image border's if image left selected
             removeSelection();
-            var content = text.getElementsByTagName('body')[0].textContent ;
+            var content = text.getElementById("textarea").textContent ;
             var link = document.createElement('a');
             var mimeType='text/plain';
             link.setAttribute('download','download.txt');
@@ -478,9 +483,11 @@ define([
             if (presence.getUserInfo().networkId === msg.user.networkId) {
                 return;
             }
+            saveRangePosition(textarea);
             // Changes made by user in presence will be handled here
-            text.getElementsByTagName('body')[0].innerHTML = msg.data ;
+            text.getElementById("textarea").innerHTML = msg.data ;
             imageHandler();
+            restoreRangePosition(textarea);
             // Store the changes made by non host users in stack 
             storechangesinstack();
         };
@@ -498,7 +505,7 @@ define([
         // For loading the initial content for other users ( init )
         var onNetworkUserChanged = function(msg) {
             if (isHost) {
-                var data = text.getElementsByTagName('body')[0].innerHTML ;
+                var data = text.getElementById("textarea").innerHTML ;
                 presence.sendMessage(presence.getSharedInfo().id, {
                     user: presence.getUserInfo(),
                     action: 'init',
@@ -525,7 +532,7 @@ define([
 
         function updateContent(){
             if(presence){
-                var data = text.getElementsByTagName('body')[0].innerHTML ;
+                var data = text.getElementById("textarea").innerHTML ;
                 presence.sendMessage(presence.getSharedInfo().id, {
                     user: presence.getUserInfo(),
                     action: 'update',
@@ -538,7 +545,7 @@ define([
 
         function storechangesinstack(){
             if(presence){
-            var html = text.getElementsByTagName('body')[0].innerHTML;
+            var html = text.getElementById("textarea").innerHTML;
             if((top!=-1)&&(stack[top]==html)){
                 console.log("No HTML changes");
             }
@@ -556,7 +563,7 @@ define([
             else {
                 
                 top--;
-                text.getElementsByTagName('body')[0].innerHTML = stack[top];
+                text.getElementById("textarea").innerHTML = stack[top];
                 
             }
         }
@@ -571,10 +578,12 @@ define([
                     console.log("Empty");
                 } else{
                     top++;
-                    text.getElementsByTagName('body')[0].innerHTML = stack[top];
+                    text.getElementById("textarea").innerHTML = stack[top];
                 }
             }
         }
+
+        
         
 	});
 

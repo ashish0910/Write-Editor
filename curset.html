@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+        <button id=save>save position</button>
+        <button id=delH>delete html</button><button id=resH>restore html</button>
+        <button id=restore>restore position</button>
+        <div id=bE contenteditable=true>Click in the box to focus caret position then save button to save caret position, then click delete html, then click restore html and finally click restore position to see caret position restored</div>
+<script>
+    save.addEventListener("click",saveRangePosition);
+restore.addEventListener("click",restoreRangePosition);
+
+delH.addEventListener("click",delhtml);
+resH.addEventListener("click",reshtml);
+var h;
+function delhtml(){h=bE.innerHTML;bE.innerHTML=""};
+function reshtml(){bE.innerHTML=h};
+
+function saveRangePosition()
+  {
+  var range=window.getSelection().getRangeAt(0);
+  var sC=range.startContainer,eC=range.endContainer;
+
+  A=[];while(sC!==bE){A.push(getNodeIndex(sC));sC=sC.parentNode}
+  B=[];while(eC!==bE){B.push(getNodeIndex(eC));eC=eC.parentNode}
+
+  window.rp={"sC":A,"sO":range.startOffset,"eC":B,"eO":range.endOffset};
+  }
+
+function restoreRangePosition()
+  {
+  bE.focus();
+  var sel=window.getSelection(),range=sel.getRangeAt(0);
+  var x,C,sC=bE,eC=bE;
+
+  C=rp.sC;x=C.length;while(x--)sC=sC.childNodes[C[x]];
+  C=rp.eC;x=C.length;while(x--)eC=eC.childNodes[C[x]];
+
+  range.setStart(sC,rp.sO);
+  range.setEnd(eC,rp.eO);
+  sel.removeAllRanges();
+  sel.addRange(range)
+  }
+function getNodeIndex(n){var i=0;while(n=n.previousSibling)i++;return i}
+</script>
+</body>
+</html>
