@@ -45,6 +45,7 @@ define([
                     if (error==null && data!=null) {
                         html = JSON.parse(data);
                         text.getElementById("textarea").innerHTML = html;
+                        document.getElementById("textarea").focus();
                         imageHandler();
                     }
                 });
@@ -66,7 +67,7 @@ define([
 
 
         });
-
+        
         // Create Listeners for images on start of activity
         function imageHandler() {
             
@@ -85,7 +86,9 @@ define([
                             image.style.border = "none";
                             image.style.borderImage = "none";
                             currentImage=null;
+                            console.log("Des");
                         } else {
+                            console.log("sel");
                             currentImage=id;
                             imgSrcs.forEach(function(id2,index2){
                                 if(id2==currentImage){
@@ -355,8 +358,9 @@ define([
                     img=data.toString();
                     var id = "rand" + Math.random();
                     img = "<img src='" + img + "' id=" + id + " style='float:none'>";
-                    document.getElementById("textarea").focus();
+                    restoreRangePosition(document.getElementById("textarea"));
                     document.execCommand("insertHTML", false, img);
+                    document.getElementById("textarea").blur();
                     imgSrcs.push(id);
                     text.getElementById(id).addEventListener("click",function(){
                         if(id==currentImage){
@@ -382,6 +386,7 @@ define([
                     }
                         
                     });
+                    document.getElementById(id).click();
                     updateContent();
                     storechangesinstack();
                 });
@@ -438,22 +443,64 @@ define([
         document.getElementById("15").addEventListener('click',function(){
             // Remove image border's if image left selected
             removeSelection();
-            var content = text.getElementById("textarea").textContent ;
-            var link = document.createElement('a');
-            var mimeType='text/plain';
-            link.setAttribute('download','download.txt');
-            link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(content));
-            document.body.append(link);
-            link.click();
-            document.body.removeChild(link);
+            var mimetype = 'text/plain';
+            var inputData = text.getElementById("textarea").textContent;
+            inputData=JSON.stringify(inputData);
+            var metadata = {
+			mimetype: mimetype,
+			title: "Write TXT",
+			activity: "org.sugarlabs.Write",
+			timestamp: new Date().getTime(),
+			creation_time: new Date().getTime(),
+			file_size: 0
+		};
+		datastore.create(metadata, function() {
+			console.log("export done.")
+		}, inputData);
         });
         
         // save as PDF
         document.getElementById("16").addEventListener('click',function(){
             // Remove image border's if image left selected
             removeSelection();
-            downloadPDF();
-        });
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+            html2canvas(document.getElementById("textarea"),{
+                onrendered : function(canvas){
+                    var imgData = canvas.toDataURL('image/png');
+
+                    var imgWidth = 210;
+                    var pageHeight = 295;
+                    var imgHeight = canvas.height * imgWidth / canvas.width;
+                    var heightLeft = imgHeight;
+
+                    var doc = new jsPDF('p', 'mm');
+                    var position = 0;
+
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+
+                    while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    }
+                    var inputData = doc.output('dataurlstring');
+                    var mimetype = 'application/pdf';
+                    var metadata = {
+                        mimetype: mimetype,
+                        title: "write PDF",
+                        activity: "org.sugarlabs.Write",
+                        timestamp: new Date().getTime(),
+                        creation_time: new Date().getTime(),
+                        file_size: 0
+                    };
+                    datastore.create(metadata, function() {
+                        console.log("export done.")
+                    }, inputData);
+                }
+            })
+            });
 
         // Multi User collab.
 
@@ -528,8 +575,16 @@ define([
         text.addEventListener("keyup",function(){
             updateContent();
             storechangesinstack();
+            saveRangePosition(document.getElementById("textarea"));
         });
-
+        // document.getElementById("textarea").addEventListener("click",function(){
+        //     if(document.getElementById(currentImage)){
+        //         console.log("rem");
+        //         document.getElementById(currentImage).click();
+        //     } else {
+        //         saveRangePosition(document.getElementById("textarea"));
+        //     }
+        // })
         function updateContent(){
             if(presence){
                 var data = text.getElementById("textarea").innerHTML ;
