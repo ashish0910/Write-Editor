@@ -22,6 +22,11 @@ define([
         activity.setup();
         var text = document;
         var textarea = document.getElementById("textarea");
+
+        // Variables for Displaying carset of other users
+        var myposition;
+        var myid;
+
         // Load From datastore
         
         // Create variable for handling undo-redo in multi user env
@@ -533,6 +538,24 @@ define([
             saveRangePosition(textarea);
             // Changes made by user in presence will be handled here
             text.getElementById("textarea").innerHTML = msg.data ;
+            if(msg.action == 'update'){
+            var carets = document.getElementsByClassName("caret");
+            var found = false;
+            for(var i = 0 ; i<carets.length ; i++){
+                if(carets[i].id == myid){
+                    carets[i].remove();
+                } else if(carets[i].id == msg.user.networkId){
+                    carets[i].style.top = msg.position.top.toString()+"px";
+                    carets[i].style.left = msg.position.left.toString()+"px";
+                    found = true;
+                }
+            }
+            if(found == false){
+                var html = "<div><img class='caret' id=" + msg.user.networkId.toString() + " style='top:"+msg.position.top.toString()+"px; left:"+msg.position.left.toString()+"px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'></div>"
+                text.getElementById("cursors").innerHTML = text.getElementById("cursors").innerHTML + html;
+                console.log
+            }
+            }
             imageHandler();
             restoreRangePosition(textarea);
             // Store the changes made by non host users in stack 
@@ -559,6 +582,10 @@ define([
                     data: data
                 });
             }
+            
+            if(!myid){
+                myid = msg.user.networkId;
+            }
             // handle user enter/exit Notifications
             var userName = msg.user.name.replace('<', '&lt;').replace('>', '&gt;');
             var html = "<img style='height:30px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'>"
@@ -573,6 +600,7 @@ define([
         
         // For loading content of other users (update)
         text.addEventListener("keyup",function(){
+            myposition = $("#textarea").caret('position');
             updateContent();
             storechangesinstack();
             saveRangePosition(document.getElementById("textarea"));
@@ -596,7 +624,8 @@ define([
                 presence.sendMessage(presence.getSharedInfo().id, {
                     user: presence.getUserInfo(),
                     action: 'update',
-                    data: data
+                    data: data,
+                    position : myposition
                 });
             }
         }
