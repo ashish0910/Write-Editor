@@ -86,6 +86,7 @@ define([
                 console.log(imgSrcs);
                 imgSrcs.forEach(function (id, index) {
                     text.getElementById(id).addEventListener("click",function(){
+                        document.getElementById("textarea").blur();
                         if(id==currentImage){
                             var image = text.getElementById(id);
                             image.style.border = "none";
@@ -365,9 +366,9 @@ define([
                     img = "<img src='" + img + "' id=" + id + " style='float:none'>";
                     restoreRangePosition(document.getElementById("textarea"));
                     document.execCommand("insertHTML", false, img);
-                    document.getElementById("textarea").blur();
                     imgSrcs.push(id);
                     text.getElementById(id).addEventListener("click",function(){
+                        document.getElementById("textarea").blur();
                         if(id==currentImage){
                             var image = text.getElementById(id);
                             image.style.border = "none";
@@ -538,6 +539,8 @@ define([
             saveRangePosition(textarea);
             // Changes made by user in presence will be handled here
             text.getElementById("textarea").innerHTML = msg.data ;
+            
+            // Code to show xoicons as cursors of other users
             if(msg.action == 'update'){
             var carets = document.getElementsByClassName("caret");
             var found = false;
@@ -553,9 +556,26 @@ define([
             if(found == false){
                 var html = "<div><img class='caret' id=" + msg.user.networkId.toString() + " style='top:"+msg.position.top.toString()+"px; left:"+msg.position.left.toString()+"px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'></div>"
                 text.getElementById("cursors").innerHTML = text.getElementById("cursors").innerHTML + html;
-                console.log
+                }
             }
+            if(msg.action == 'init'){
+                document.getElementById("cursors").innerHTML = msg.cursors;
+                var carets = document.getElementsByClassName("caret");
+                for(var i = 0 ; i<carets.length ; i++){
+                    if(carets[i].id == myid)
+                    carets[i].remove();
+                }
+                if(msg.position.top!=null){
+                    console.log("Ran?");
+                    var html = "<div><img class='caret' id=" + msg.user.networkId.toString() + " style='top:"+msg.position.top.toString()+"px; left:"+msg.position.left.toString()+"px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'></div>"
+                    text.getElementById("cursors").innerHTML = text.getElementById("cursors").innerHTML + html;
+                } else {
+                    console.log("NO",msg.position);
+                }
+                
             }
+            
+            // Add event list. to images
             imageHandler();
             restoreRangePosition(textarea);
             // Store the changes made by non host users in stack 
@@ -574,15 +594,20 @@ define([
 
         // For loading the initial content for other users ( init )
         var onNetworkUserChanged = function(msg) {
+            // Fetch all the cursors
+            var cursors = document.getElementById("cursors").innerHTML;
+            myposition = $("#textarea").caret('position');
             if (isHost) {
                 var data = text.getElementById("textarea").innerHTML ;
                 presence.sendMessage(presence.getSharedInfo().id, {
                     user: presence.getUserInfo(),
                     action: 'init',
-                    data: data
+                    data: data,
+                    cursors: cursors,
+                    position: myposition
                 });
             }
-            
+
             if(!myid){
                 myid = msg.user.networkId;
             }
@@ -595,6 +620,11 @@ define([
 
             if (msg.move === -1) {
             humane.log(html+userName+" Left");
+            var carets = document.getElementsByClassName("caret");
+            for(var i = 0 ; i<carets.length ; i++){
+                if(carets[i].id == msg.user.networkId)
+                carets[i].remove();
+            }
             }
         };
         
