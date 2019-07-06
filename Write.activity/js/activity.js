@@ -93,6 +93,7 @@ define([
                             image.style.borderImage = "none";
                             currentImage=null;
                             console.log("Des");
+                            restoreRangePosition(document.getElementById("textarea"));
                         } else {
                             console.log("sel");
                             currentImage=id;
@@ -374,6 +375,7 @@ define([
                             image.style.border = "none";
                             image.style.borderImage = "none";
                             currentImage=null;
+                            restoreRangePosition(document.getElementById("textarea"));
                     } else {
                         currentImage=id;
                         imgSrcs.forEach(function(id2,index2){
@@ -724,7 +726,7 @@ define([
         }
         
         function undo(){
-            if(top==-1){
+            if(top==-1||top==0){
                 console.log("No changes made");
             }
             else {
@@ -737,7 +739,7 @@ define([
         
         function redo(){
             
-            if(top==-1){
+            if(top==-1||top==0){
                 console.log("No changes made");
             } else{
                 var check = top+1;
