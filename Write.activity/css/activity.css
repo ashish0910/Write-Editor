@@ -83,6 +83,10 @@
   overflow-x: hidden;
 }
 
+p{
+  margin: 0px;
+}
+
 #textarea div {
   display: inline;
 }
@@ -132,6 +136,28 @@
 .palette .colors tr:nth-last-child(1) button {
   margin-bottom: 5.5px;
 }
-.caret{
+
+.cursor-container{
+  margin-left: -9px;
+  padding: 0 9px;
+  z-index: 1;
   position: absolute;
+  height: 20px;
 }
+
+.cursor{
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+}
+
+.cursor-name{
+  display: inline-block;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  opacity: 0.5;
+}
+
