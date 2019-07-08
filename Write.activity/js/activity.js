@@ -50,6 +50,7 @@ define([
                     if (error==null && data!=null) {
                         html = JSON.parse(data);
                         text.getElementById("textarea").innerHTML = html;
+                        document.getElementById('textarea').setAttribute("style","display:block;height:100%");
                         document.getElementById("textarea").focus();
                         imageHandler();
                         document.execCommand('defaultParagraphSeparator', false, 'p');
