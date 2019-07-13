@@ -38,10 +38,6 @@
   background-image: url(../icons/create-table.svg);
 }
 
-#main-toolbar #speak {
-  background-image: url(../icons/play-circle-o.svg);
-}
-
 #main-toolbar #export {
   background-image: url(../icons/file-export.svg);
 }
@@ -166,7 +162,7 @@ p{
   height: 20px;
 }
 
-#edit-text , #format-text , #paragraph ,#list,#font-button,#resize-inc,#resize-dec,#insert-picture,#insert-table,#export,#color-button-1,#color-button-2,#speak{
+#edit-text , #format-text , #paragraph ,#list,#font-button,#resize-inc,#resize-dec,#insert-picture,#insert-table,#export,#color-button-1,#color-button-2{
   display: none;
 }
 
@@ -237,13 +233,6 @@ p{
 }
 
 @media only screen and (min-width: 935px) {
-  #speak {
-    display: inline-block;
-  }
-}
-
-
-@media only screen and (min-width: 950px) {
   #export {
     display: inline-block;
   }
