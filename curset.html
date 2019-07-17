@@ -12,21 +12,23 @@
         <div id="bE" contenteditable=true>Click in the box to focus caret position then save button to save caret position, then click delete html, then click restore html and finally click restore position to see caret position restored</div>
 <script>
 
-function saveCaretPosition(context){
-    var selection = window.getSelection();
-    var range = selection.getRangeAt(0);
-    range.setStart(  context, 0 );
-    var len = range.toString().length;
+var selection , len ;
 
-    return function restore(){
+function saveCaretPosition(context){
+    selection = window.getSelection();
+    range = selection.getRangeAt(0);
+    range.setStart(  context, 0 );
+    len = range.toString().length;
+
+}
+function restore(context){
+        len=-1;
         var pos = getTextNodeAtPosition(context, len);
         selection.removeAllRanges();
         var range = new Range();
         range.setStart(pos.node ,pos.position);
         selection.addRange(range);
-
     }
-}
 
 function getTextNodeAtPosition(root, index){
     var lastNode = null;
@@ -48,13 +50,21 @@ function getTextNodeAtPosition(root, index){
 
 var code = document.getElementById("bE");
 var restore ;
-
+code.addEventListener("keyup",function(){
+    var caretOffset = 0;    
+    var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(code);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+        console.log(caretOffset);
+});
 document.getElementById("save").addEventListener("click",function(){
-  restore = saveCaretPosition(document.getElementById("bE"));
+  saveCaretPosition(document.getElementById("bE"));
 });
 
 document.getElementById("restore").addEventListener("click",function(){
-  restore();
+  restore(document.getElementById("bE"));
 })
 
 // code.addEventListener('input',function (e) {
