@@ -9,8 +9,20 @@
 <body>
         <button id="save">save position</button>
         <button id="restore">restore position</button>
+        <button id="delay" >delay</button>
         <div id="bE" contenteditable=true>Click in the box to focus caret position then save button to save caret position, then click delete html, then click restore html and finally click restore position to see caret position restored</div>
 <script>
+
+var delay = 2000;
+
+document.getElementById("delay").addEventListener("click",function(){
+    delay=delay+10000;
+    console.log("delayer",delay);
+})
+
+setTimeout(function(){
+    alert("hello");
+},delay);
 
 var selection , len ;
 
