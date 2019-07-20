@@ -38,7 +38,7 @@ define([
 		var container = document.getElementById('editor');
 		var editor = new Quill(container,options);
 		editor.focus();
-
+		const cursors = editor.getModule('cursors');
 		// Journal Handling (Load)
 		env.getEnvironment(function(err, environment) {
             
@@ -61,6 +61,11 @@ define([
 			// Shared instances
 			if (environment.sharedId) {
 				console.log("Shared instance");
+
+				// Hide GUI of undo and redo for non host users
+                document.getElementById("3").style.display = "none";
+                document.getElementById("4").style.display = "none";
+
 				presence = activity.getPresenceObject(function(error, network) {
 					network.onDataReceived(onNetworkDataReceived);
 					network.onSharedActivityUserChanged(onNetworkUserChanged);
@@ -343,13 +348,15 @@ define([
 			});
 			
 			editor.on('text-change', function(delta, oldDelta, source) {
-				console.log("change made by" + source);
+				
 				if ((source == 'user' || changeMadebyUser==true) && presence!=null) {
+					var range = editor.getSelection();
 					presence.sendMessage(presence.getSharedInfo().id, {
 						user: presence.getUserInfo(),
 						content: {
 							action: 'typing',
-							data: delta
+							data: delta,
+							range: range
 						}
 					});
 					changeMadebyUser=false;
@@ -359,21 +366,25 @@ define([
 
 			editor.on('selection-change', function(range, oldRange, source) {
 				if (range) {
-				  if (range.length == 0) {
-					// console.log('User cursor is on', range.index);
-				  } else {
-					var text = editor.getText(range.index, range.length);
-					// console.log('User has highlighted', text);
-				  }
-				} else {
-				//   console.log('Cursor not in the editor');
-				}
+				  if (range.length == 0 && presence!=null) {
+					presence.sendMessage(presence.getSharedInfo().id, {
+						user: presence.getUserInfo(),
+						content: {
+							action: 'selection',
+							range: range
+						}
+					});
+				  } 
+				} 
 			  });
 
 		// Presence Palette
 		// Link presence palette
 		var presence = null;
 		var isHost = false;
+		var myid;
+		var nomoreinit = false;
+		var mycursor;
 		var palette = new presencepalette.PresencePalette(document.getElementById("network-button"), undefined);
         palette.addEventListener('shared', function() {
             palette.popDown();
@@ -396,11 +407,26 @@ define([
 			if (presence.getUserInfo().networkId === msg.user.networkId) {
 				return;
 			}
-			if(msg.content.action=='init'){
+			if(msg.content.action=='init' && nomoreinit==false){
 				editor.updateContents(msg.content.data);
+				var getallcursors = msg.content.allcursors;
+				for(var i = 0 ; i < getallcursors.length ; i++){
+					console.log(getallcursors[i]);
+					if(getallcursors[i].id!=myid){
+						cursors.createCursor(getallcursors[i].id, getallcursors[i].name,getallcursors[i].color) ;
+						cursors.moveCursor(getallcursors[i].id, getallcursors[i].range) ;
+					}
+				}
+				cursors.update();
+				nomoreinit=true;
 			}
 			if(msg.content.action=='typing'){
 				editor.updateContents(msg.content.data);
+				cursors.moveCursor(msg.user.networkId,msg.content.range);
+				console.log(msg.user.networkId);
+			}
+			if(msg.content.action=='selection'){
+				cursors.moveCursor(msg.user.networkId,msg.content.range);
 			}
 			
 		}; 
@@ -408,23 +434,50 @@ define([
 		var onNetworkUserChanged = function(msg) {
 			if (isHost) {
 				var data = editor.getContents();
+				var range = editor.getSelection();
+				mycursor.range = range;
+				var allcursors = cursors.cursors();
 				presence.sendMessage(presence.getSharedInfo().id, {
 					user: presence.getUserInfo(),
 					content: {
 						action: 'init',
-						data: data
+						data: data,
+						allcursors: allcursors
 					}
 				});
+				mycursor.range = null;
 			}
-			console.log("User "+msg.user.name+" "+(msg.move == 1 ? "join": "leave"));
+			if(!myid){
+                myid = msg.user.networkId;
+            }
 			// handle user enter/exit Notifications
             var userName = msg.user.name.replace('<', '&lt;').replace('>', '&gt;');
-            var html = "<img style='height:30px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'>"
+			var html = "<img style='height:30px;' src='" + generateXOLogoWithColor(msg.user.colorvalue) + "'>";
+			presence.listSharedActivities(function(activities){
+                for (var i = 0; i < activities.length; i++) {
+                    if (activities[i].id === presence.getSharedInfo().id) {
+                        getConnectedPeople(activities[i].users);
+                    }
+                  }
+            });
+            for (var key in connectedPeople) {
+                console.log(connectedPeople[key].name,key,connectedPeople[key].networkId);
+            }
 			if(msg.move==1){
 				humane.log(html+userName+" Joined");
+				var c = cursors.createCursor(msg.user.networkId, userName, msg.user.colorvalue.stroke);
+				if(myid==msg.user.networkId) {mycursor=c;}
 			}
 			if (msg.move === -1) {
+				cursors.removeCursor(msg.user.networkId);
 				humane.log(html+userName+" Left");
+				if(msg.user.networkId == connectedPeople[0].networkId){
+					if(connectedPeople[1].networkId == myid){
+						document.getElementById(3).style.display = "inline";
+						document.getElementById(4).style.display = "inline";
+						isHost=true;
+					}
+				}
 			}	
 		};
 		
@@ -436,13 +489,36 @@ define([
             coloredLogo = coloredLogo.replace("#FFFFFF", color.fill)
         
             return "data:image/svg+xml;base64," + btoa(coloredLogo);
+		}
+		
+		var connectedPeople = {};
+        // Maintain a list of connected users
+        function displayConnectedPeople(){
+            var presenceUsersDiv = document.getElementById("presence-users");
+            var html = "<hr><ul style='list-style: none; padding:0;'>";
+            for (var key in connectedPeople) {
+                html += "<li><img style='height:30px;' src='" + generateXOLogoWithColor(connectedPeople[key].colorvalue) + "'>" + connectedPeople[key].name + "</li>"
+            }
+              html += "</ul>"
+              presenceUsersDiv.innerHTML = html
         }
 
-
+        function getConnectedPeople(users){
+            var presenceUsersDiv = document.getElementById("presence-users");
+            if (!users || !presenceUsersDiv) {
+            return;
+            }
+            connectedPeople = {};
+            presence.listSharedActivityUsers(presence.getSharedInfo().id , function(usersConnected){
+                connectedPeople = {};
+                for (var i = 0; i < usersConnected.length; i++) {
+                    var userConnected = usersConnected[i];
+                    connectedPeople[i] = userConnected;
+                }
+                displayConnectedPeople();
+            });
+        }
 
 	});
-
-	 
-
 		
 });
