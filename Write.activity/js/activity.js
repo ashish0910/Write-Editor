@@ -31,7 +31,7 @@ define([
 				resize: true,
 				toolbar: true
 			  },
-			  cursors: true
+			  cursors: true,
 			},
 			};
 		Quill.register('modules/cursors', QuillCursors);
@@ -67,6 +67,7 @@ define([
                 document.getElementById("4").style.display = "none";
 
 				presence = activity.getPresenceObject(function(error, network) {
+					
 					network.onDataReceived(onNetworkDataReceived);
 					network.onSharedActivityUserChanged(onNetworkUserChanged);
 				});
