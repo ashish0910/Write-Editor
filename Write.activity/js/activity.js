@@ -394,7 +394,7 @@ define([
 		editor.on('selection-change', function(range, oldRange, source) {
 			// Executes when user selection changes
 			if (range) {
-				if (range.length == 0 && presence!=null) {
+				if (presence!=null) {
 				presence.sendMessage(presence.getSharedInfo().id, {
 					user: presence.getUserInfo(),
 					content: {
@@ -451,7 +451,6 @@ define([
 			if(msg.content.action=='typing'){
 				editor.updateContents(msg.content.data);
 				cursors.moveCursor(msg.user.networkId,msg.content.range);
-				console.log(msg.user.networkId);
 			}
 			if(msg.content.action=='selection'){
 				cursors.moveCursor(msg.user.networkId,msg.content.range);
