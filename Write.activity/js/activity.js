@@ -31,7 +31,9 @@ define([
 				resize: true,
 				toolbar: true
 			  },
-			  cursors: true,
+			  cursors: {
+				transformOnTextChange: true,
+			  },
 			},
 			};
 		Quill.register('modules/cursors', QuillCursors);
