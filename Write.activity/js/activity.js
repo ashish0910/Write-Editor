@@ -398,7 +398,6 @@ define([
 		
 		editor.on('text-change', function(delta, oldDelta, source) {
 			// Executes on text or formatting changes
-			console.log(source);
 			if ((source == 'user' || changeMadebyUser==true) && presence!=null) {
 				var range = editor.getSelection();
 				presence.sendMessage(presence.getSharedInfo().id, {
@@ -469,16 +468,16 @@ define([
 					}
 				}
 				cursors.update();
+				// Create Fake event to init Cursors
 				document.getElementById("list-ordered").click();
 				document.getElementById("list-ordered").click();
 				nomoreinit=true;
 			}
 			if(msg.content.action=='typing'){
 				editor.updateContents(msg.content.data);
-				cursors.moveCursor(msg.user.networkId,msg.content.range);
 			}
 			if(msg.content.action=='selection'){
-				cursors.moveCursor(msg.user.networkId,msg.content.range);
+				setTimeout(() => cursors.moveCursor(msg.user.networkId,msg.content.range) , 5);
 			}
 			
 		}; 
